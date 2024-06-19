@@ -10,6 +10,25 @@
     </style>
 </head>
 <body>
+    <div>
+        <table>
+            <tr>
+                <th><a href="#badgeNum">Badge Num</a></th>
+                <th><a href="#name">Name</a></th>
+                <th><a href="#login">Login</a></th>
+            </tr>
+            <tr>
+                <td>12345</td>
+                <td>John Doe</td>
+                <td>johndoe@example.com</td>
+            </tr>
+            <tr>
+                <td>67890</td>
+                <td>Jane Smith</td>
+                <td>janesmith@example.com</td>
+            </tr>
+        </table>
+    </div>
     <h1>Welcome to my web page!</h1>
     <p>This is a simple web page.</p>
 
