@@ -13,3 +13,6 @@ Pages:
     - After they add a line into the board they will have the option to either add people to the 'line' or add stations on too the line. Then they can add people into those stations or add 'substations' which breaks down one spot for two people.
 3. Create Board will simply allow the user to set up a board without having to start a team. 
     - Board will work like regular but the board is not designed to save information. Users will simply have barcode/name only.
+
+## Part 2 of the project
+1. 
