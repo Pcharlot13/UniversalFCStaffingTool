@@ -28,10 +28,17 @@
             padding: 10px;
             text-align: left;
         }
+        #newEntryBtn {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>ISA RECORDER</h1>
+    <button id="newEntryBtn">NEW</button>
     <table id="isaTable">
         <thead>
             <tr>
@@ -68,8 +75,8 @@
             cell3.textContent = location;
         }
 
-        // Call the function to add a row to the table when the document loads
-        document.addEventListener('DOMContentLoaded', addRowToTable);
+        // Adding event listener to the "NEW" button
+        document.getElementById('newEntryBtn').addEventListener('click', addRowToTable);
     </script>
 </body>
 </html>
