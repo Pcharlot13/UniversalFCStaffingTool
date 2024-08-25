@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staffing Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Main Panel</a></li>
+                <li><a href="#">Associates</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Backup</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="workstation" id="workstation-1">
+            <h2>Workstation 1</h2>
+            <div class="buckets">
+                <div class="bucket" id="bucket-1-1">Bucket 1</div>
+                <div class="bucket" id="bucket-1-2">Bucket 2</div>
+                <!-- Add more buckets as needed -->
+            </div>
+        </div>
+
+        <!-- Add more workstations as needed -->
+
+        <div class="associate" id="associate-1" draggable="true">
+            <span class="associate-name">John Doe</span>
+            <span class="associate-id">ID: 12345</span>
+        </div>
+        <!-- Add more associates as needed -->
+    </main>
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>

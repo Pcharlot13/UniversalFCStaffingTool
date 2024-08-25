@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+main {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.workstation {
+    border: 2px solid #333;
+    padding: 20px;
+    background-color: #fff;
+    width: 300px;
+    text-align: center;
+}
+
+.buckets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.bucket {
+    border: 1px solid #333;
+    background-color: #eee;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.associate {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4285F4;
+    color: white;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.associate-name,
+.associate-id {
+    display: none;
+}
+
+.associate:hover .associate-name,
+.associate:hover .associate-id {
+    display: block;
+}
+
+.associate:hover {
+    width: 120px;
+    height: 120px;
+}
