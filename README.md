@@ -2,6 +2,7 @@
  UniversalStaffing is a dynamic staffing management tool designed for managerial teams to efficiently track and visualize associate placements. This static tool offers a clean, intuitive user interface with drag-and-drop functionality, enabling seamless adjustments to associate locations. Built using HTML, CSS, and JavaScript, UniversalStaffing ensures data privacy with local storage of essential information such as names, badge numbers, and work times, all without hosting requirements. The tool’s structured design and visual representations of workstations and associates provide a straightforward, user-friendly experience for effective workforce organization.
 
 ## Goals
+- [ ] Create new button sections.
 - [ ] Add badge scanning prototype
 - [ ] Develop the core interface with drag-and-drop functionality.
 - [ ] Implement badge scanning and data entry features.
