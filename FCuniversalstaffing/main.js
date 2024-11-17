@@ -1,7 +1,6 @@
 document.getElementById('newButton').addEventListener('click', function() {
     const badgeNumber = prompt("Please enter the Badge Number:");
 
-        <div class="col-md-4"><input type="text" class="form-control" placeholder="Cell 1"></div>
     if (badgeNumber !== null) {
         const generatedContent = document.getElementById('generatedContent');
 
