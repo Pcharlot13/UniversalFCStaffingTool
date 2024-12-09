@@ -1,16 +1,18 @@
 # UniversalFCStaffingTool
  UniversalStaffing is a dynamic staffing management tool designed for managerial teams to efficiently track and visualize associate placements. This static tool offers a clean, intuitive user interface with drag-and-drop functionality, enabling seamless adjustments to associate locations. Built using HTML, CSS, and JavaScript, UniversalStaffing ensures data privacy with local storage of essential information such as names, badge numbers, and work times, all without hosting requirements. The tool’s structured design and visual representations of workstations and associates provide a straightforward, user-friendly experience for effective workforce organization.
+ 
+## Developmental Sequence
 
-## Goals
-- [ ] Create new button sections.
-- [ ] Add badge scanning prototype
-- [ ] Develop the core interface with drag-and-drop functionality.
-- [ ] Implement badge scanning and data entry features.
-- [ ] Ensure data storage for associate names, badge numbers, and ID numbers.
-- [ ] Visualize workstations as squares and associates as circles.
-- [ ] Develop minimal, local data storage without hosting requirements.
+| **Phase** | **Features**                                  | **Purpose**                                    |
+|-----------|----------------------------------------------|-----------------------------------------------|
+| **1**     | Project Setup, UI Layout, LocalStorage Mgmt   | Establish foundation and avoid early issues.  |
+| **2**     | Manual Entry, Excel Upload, Display Roster    | Core roster management functionality.         |
+| **3**     | Add Areas, Assign Associates                 | Build key assignment features.                |
+| **4**     | Drag-and-Drop, Data Validation, Feedback      | Enhance usability and interactivity.          |
+| **5**     | Responsive Design, Accessibility             | Ensure usability across devices and for all users. |
+| **6**     | Export, Backup, Restore                      | Allow data management and recovery.           |
+| **7**     | Testing, Debugging, Feedback                 | Refine and finalize.                          |
 
-## Progress Tracking
 ### Completed Milestones
 - 
 
@@ -18,12 +20,8 @@
 - **Drag-and-Drop Interface**: Development in progress.
 - **Data Storage**: Initial code for local storage implemented and under testing.
 
-## Future Plans
-- Introduce a hover feature for additional details on associates.
-- Add keyboard navigation for improved accessibility.
-- Integrate data validation to prevent duplicate entries.
-- 
-
 ## Updates Log
 - **[11/6]**: Started the initial UI design.
-- **[Date]**: Started development of the drag-and-drop interface.
+- **[12/9]**: Created initial prototype, but branch became broken and unusable
+- **[12/9]**: Intigrated "developmental sequence" to bring more organization into project vision
+- **[12/9]**: Added 
