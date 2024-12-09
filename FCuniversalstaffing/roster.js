@@ -48,4 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('uploadRosterButton').addEventListener('click', function() {
         alert("Upload Roster functionality has been removed.");
     });
+
+    // Update the home link
+    document.querySelector('a[href="main.html"]').setAttribute('href', 'index.html');
 });
