@@ -24,4 +24,3 @@
 - **[11/6]**: Started the initial UI design.
 - **[12/9]**: Created initial prototype, but branch became broken and unusable
 - **[12/9]**: Intigrated "developmental sequence" to bring more organization into project vision
-- **[12/9]**: Added 
