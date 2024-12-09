@@ -17,8 +17,8 @@
 - Phase 1 complete (features subject to change)
 
 ### Current Progress
-- **Phase 2 in progress
-- **Phase 3 partially complete (in progress due to incompletion of second phase)
+- **Phase** 2 in progress
+- **Phase** 3 partially complete (in progress due to incompletion of second phase)
 - **Data Storage**: Initial code for local storage implemented and under testing.
 
 ## Updates Log
