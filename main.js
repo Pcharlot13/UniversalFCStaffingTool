@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     name = prompt("Name?");
                 }
 
-                if (badgeNumber !== null && login !== null && name !== null) {
+                if (badgeNumber && login && name) {
                     const associateRow = document.createElement('div');
                     associateRow.className = 'row mt-3';
                     associateRow.innerHTML = `
