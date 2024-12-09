@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const associateRow = document.createElement('div');
                 associateRow.className = 'row mt-3';
                 associateRow.innerHTML = `
-                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.badgeNumber}" placeholder="Badge Number"></div>
-                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.login}" placeholder="Login"></div>
-                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.name}" placeholder="Name"></div>
+                    <div class="col-md-4"><input type="text" class="form-control badge-number" value="${associate.badgeNumber}" placeholder="Badge Number"></div>
+                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.login}" placeholder="Login" readonly></div>
+                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.name}" placeholder="Name" readonly></div>
                 `;
                 areaContent.appendChild(associateRow);
             });
@@ -56,9 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     const associateRow = document.createElement('div');
                     associateRow.className = 'row mt-3';
                     associateRow.innerHTML = `
-                        <div class="col-md-4"><input type="text" class="form-control" value="${badgeNumber}" placeholder="Badge Number"></div>
-                        <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login"></div>
-                        <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name"></div>
+                        <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
+                        <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
+                        <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
                     `;
                     areaContent.appendChild(associateRow);
 
