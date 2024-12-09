@@ -9,12 +9,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>Roster</h1>
-        <button id="newEntryButton" class="btn btn-primary">New Entry</button>
-        <a href="main.html" class="btn btn-secondary">Home</a>
-        <button id="uploadRosterButton" class="btn btn-info mt-3">Upload Roster</button>
-        <input type="file" id="uploadExcel" class="d-none" />
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">FC Staffing Tool</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button id="newEntryButton" class="btn btn-primary nav-link">New Entry</button>
+                    </li>
+                    <li class="nav-item">
+                        <a href="main.html" class="btn btn-secondary nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="uploadRosterButton" class="btn btn-info nav-link">Upload Roster</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5 pt-5">
         <div id="rosterContent"></div>
     </div>
     <script src="roster.js"></script>
