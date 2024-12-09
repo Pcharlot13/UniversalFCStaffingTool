@@ -14,7 +14,7 @@
 | **7**     | Testing, Debugging, Feedback                 | Refine and finalize.                          |
 
 ### Completed Milestones
-- **Phase** 1 complete (features subject to change)
+- **Phase 1**  complete (features subject to change)
 
 ### Current Progress
 - **Phase 2** in progress
