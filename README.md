@@ -14,13 +14,15 @@
 | **7**     | Testing, Debugging, Feedback                 | Refine and finalize.                          |
 
 ### Completed Milestones
-- 
+- **Phase 1**  complete (features subject to change)
 
 ### Current Progress
-- **Drag-and-Drop Interface**: Development in progress.
+- **Phase 2** in progress
+- **Phase 3** partially complete (in progress due to incompletion of second phase)
 - **Data Storage**: Initial code for local storage implemented and under testing.
 
 ## Updates Log
 - **[11/6]**: Started the initial UI design.
 - **[12/9]**: Created initial prototype, but branch became broken and unusable
 - **[12/9]**: Intigrated "developmental sequence" to bring more organization into project vision
+- **[12/9]**: Phase 1 mainly complete "UI Layout subject to change throughout build,"
