@@ -23,6 +23,4 @@
 
 ## Updates Log
 - **[11/6]**: Started the initial UI design.
-- **[12/9]**: Created initial prototype, but branch became broken and unusable
-- **[12/9]**: Intigrated "developmental sequence" to bring more organization into project vision
-- **[12/9]**: Phase 1 mainly complete "UI Layout subject to change throughout build,"
+- **[Date]**: Started development of the drag-and-drop interface.
