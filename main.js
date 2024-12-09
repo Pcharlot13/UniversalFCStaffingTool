@@ -11,8 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const newArea = document.createElement('div');
             newArea.className = 'mt-3';
             newArea.innerHTML = `
-                <h3>${area.title}</h3>
-                <button class="btn btn-secondary newAAButton">NEW AA</button>
+                <div class="d-flex align-items-center">
+                    <h3 class="me-2">${area.title}</h3>
+                    <button class="btn btn-secondary newAAButton">+</button>
+                </div>
                 <div class="areaContent mt-3"></div>
             `;
 
@@ -21,9 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const associateRow = document.createElement('div');
                 associateRow.className = 'row mt-3';
                 associateRow.innerHTML = `
-                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.badgeNumber}" placeholder="Badge Number"></div>
-                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.login}" placeholder="Login"></div>
-                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.name}" placeholder="Name"></div>
+                    <div class="col-md-4"><input type="text" class="form-control badge-number" value="${associate.badgeNumber}" placeholder="Badge Number"></div>
+                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.login}" placeholder="Login" readonly></div>
+                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.name}" placeholder="Name" readonly></div>
                 `;
                 areaContent.appendChild(associateRow);
             });
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 rightColumn.appendChild(newArea);
             }
 
-            // Add event listener to the "NEW AA" button
+            // Add event listener to the plus sign button
             newArea.querySelector('.newAAButton').addEventListener('click', function() {
                 const badgeNumber = prompt("Badge Number?").trim();
                 const rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
@@ -56,9 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     const associateRow = document.createElement('div');
                     associateRow.className = 'row mt-3';
                     associateRow.innerHTML = `
-                        <div class="col-md-4"><input type="text" class="form-control" value="${badgeNumber}" placeholder="Badge Number"></div>
-                        <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login"></div>
-                        <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name"></div>
+                        <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
+                        <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
+                        <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
                     `;
                     areaContent.appendChild(associateRow);
 
