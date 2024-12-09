@@ -81,6 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
         input.click();
     });
 
-     // Update the home link
-     document.querySelector('a[href="main.html"]').setAttribute('href', 'index.html');
+    // Update the home link
+    document.querySelector('a[href="main.html"]').setAttribute('href', 'index.html');
 });
