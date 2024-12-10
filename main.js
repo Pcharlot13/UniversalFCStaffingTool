@@ -41,62 +41,42 @@ document.addEventListener('DOMContentLoaded', function() {
             newArea.querySelector('.newAAButton').addEventListener('click', function() {
                 const badgeNumber = prompt("Badge Number?").trim();
                 const rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
-                const matchedEntry = rosterData.find(entry => String(entry.badgeNumber).trim() === badgeNumber);
+                const matchedEntry = rosterData.find(entry => entry.badgeNumber.trim() === badgeNumber);
 
                 let login, name;
                 if (matchedEntry) {
+                    alert("Associate found in roster");
                     login = matchedEntry.login;
                     name = matchedEntry.name;
-                    addAssociateToArea(index, badgeNumber, login, name);
                 } else {
-                    const badgeNumberInput = document.getElementById('badgeNumberInput');
-                    badgeNumberInput.value = badgeNumber;
-                    const associateModal = new bootstrap.Modal(document.getElementById('associateModal'));
-                    associateModal.show();
+                    alert("Associate not found in roster");
+                    login = prompt("Login?");
+                    name = prompt("Name?");
+                }
 
-                    document.getElementById('saveAssociateButton').addEventListener('click', function() {
-                        login = document.getElementById('loginInput').value.trim();
-                        name = document.getElementById('nameInput').value.trim();
+                if (badgeNumber !== null && login !== null && name !== null) {
+                    const associateRow = document.createElement('div');
+                    associateRow.className = 'row mt-3';
+                    associateRow.innerHTML = `
+                        <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
+                        <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
+                        <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
+                    `;
+                    areaContent.appendChild(associateRow);
 
-                        if (login && name) {
-                            addAssociateToArea(index, badgeNumber, login, name);
-                            addNewEntryToRoster(badgeNumber, login, name);
-                            associateModal.hide();
-                        } else {
-                            alert('Please fill in both Login and Name fields.');
-                        }
-                    }, { once: true });
+                    // Save to areasData and localStorage
+                    areasData[index].associates.push({ badgeNumber, login, name });
+                    localStorage.setItem('areasData', JSON.stringify(areasData));
                 }
             });
         });
     }
 
-    function addAssociateToArea(areaIndex, badgeNumber, login, name) {
-        const areaContent = document.querySelectorAll('.areaContent')[areaIndex];
-        const associateRow = document.createElement('div');
-        associateRow.className = 'row mt-3';
-        associateRow.innerHTML = `
-            <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
-            <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
-            <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
-        `;
-        areaContent.appendChild(associateRow);
-
-        // Save to areasData and localStorage
-        areasData[areaIndex].associates.push({ badgeNumber, login, name });
-        localStorage.setItem('areasData', JSON.stringify(areasData));
-    }
-
-    function addNewEntryToRoster(badgeNumber, login, name) {
-        const rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
-        rosterData.push({ badgeNumber, login, name });
-        localStorage.setItem('rosterData', JSON.stringify(rosterData));
-    }
-
     // Render the saved areas on page load
     renderAreas();
 
-    document.getElementById('newButton').addEventListener('click', function() {
+    document.getElementById('newButton').addEventListener('click', () => {
+        // Add functionality for the new button
         const titleOfArea = prompt("Title of Area:");
 
         if (titleOfArea !== null) {
@@ -110,7 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('clearDataButton').addEventListener('click', function() {
+    document.getElementById('clearDataButton').addEventListener('click', () => {
+        // Add functionality to clear all data
         if (confirm("Are you sure you want to clear all data?")) {
             localStorage.removeItem('areasData');
             localStorage.removeItem('rosterData');

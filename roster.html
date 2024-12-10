@@ -18,16 +18,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <button id="newEntryButton" class="btn btn-primary nav-link">New Entry</button>
-                    </li>
-                    <li class="nav-item">
                         <a href="index.html" class="btn btn-secondary nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <button id="uploadRosterButton" class="btn btn-info nav-link">Upload Roster</button>
+                        <button id="newEntryButton" class="btn btn-primary nav-link">New Entry</button>
                     </li>
                     <li class="nav-item">
-                        <button id="exportRosterButton" class="btn btn-success nav-link">Export Roster</button>
+                        <button id="uploadRosterButton" class="btn btn-info nav-link">Upload Roster</button>
                     </li>
                 </ul>
             </div>
@@ -35,36 +32,6 @@
     </nav>
     <div class="container mt-5 pt-5">
         <div id="rosterContent"></div>
-    </div>
-    <div class="modal fade" id="associateModal" tabindex="-1" aria-labelledby="associateModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content bg-dark text-white">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="associateModalLabel">Associate Not Found</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="associateForm">
-                        <div class="mb-3">
-                            <label for="badgeNumberInput" class="form-label">Badge Number</label>
-                            <input type="text" class="form-control" id="badgeNumberInput" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="loginInput" class="form-label">Login</label>
-                            <input type="text" class="form-control" id="loginInput" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="nameInput" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="nameInput" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveAssociateButton">Save</button>
-                </div>
-            </div>
-        </div>
     </div>
     <script src="roster.js"></script>
 </body>
