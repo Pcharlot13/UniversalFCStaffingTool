@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
             newArea.querySelector('.newAAButton').addEventListener('click', function() {
                 const badgeNumber = prompt("Badge Number?").trim();
                 const rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
-                const matchedEntry = rosterData.find(entry => entry.badgeNumber.trim() === badgeNumber);
+                const matchedEntry = rosterData.find(entry => String(entry.badgeNumber).trim() === badgeNumber);
 
                 let login, name;
                 if (matchedEntry) {
@@ -67,6 +67,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Save to areasData and localStorage
                     areasData[index].associates.push({ badgeNumber, login, name });
                     localStorage.setItem('areasData', JSON.stringify(areasData));
+
+                    // Add to rosterData and localStorage
+                    rosterData.push({ badgeNumber, login, name });
+                    localStorage.setItem('rosterData', JSON.stringify(rosterData));
                 }
             });
         });
