@@ -35,13 +35,11 @@ This tool is perfect for small-to-medium-sized teams looking for a straightforwa
 | **6**     | Export, Backup, Restore                      | Allow data management and recovery.           |
 | **7**     | Testing, Debugging, Feedback                 | Refine and finalize.                          |
 
-### Completed Milestones
-- **Phase 1**  complete (features subject to change)
-- **Phase 2** Completed (12/10)
 
 ### Current Progress
-- **Phase 2** in progress
-- **Phase 3** partially complete (in progress due to incompletion of second phase)
+- **Phase 2** Completed
+- **Phase 3** Compeleted
+- **Phase 4** In-progress
 - **Data Storage**: Initial code for local storage implemented and under testing.
 
 ## Updates Log
@@ -53,4 +51,3 @@ This tool is perfect for small-to-medium-sized teams looking for a straightforwa
 - **[12/10]**: Phase 2 completed, as well as a headcount pie chart for data driven tracking
 =======
 - **[Date]**: Started development of the drag-and-drop interface.
->>>>>>> b1b9b9fc82399dd2f02e6429608ae279c53e2875
