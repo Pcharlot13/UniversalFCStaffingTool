@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (matchedEntry) {
                     login = matchedEntry.login;
                     name = matchedEntry.name;
+                    addAssociate(badgeNumber, login, name, index, areaContent);
                 } else {
                     document.getElementById('badgeNumberInput').value = badgeNumber;
                     const associateModal = new bootstrap.Modal(document.getElementById('associateModal'));
@@ -59,6 +60,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         if (login && name) {
                             addAssociate(badgeNumber, login, name, index, areaContent);
+                            // Update roster data
+                            const rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
+                            rosterData.push({ badgeNumber, login, name });
+                            localStorage.setItem('rosterData', JSON.stringify(rosterData));
                             associateModal.hide();
                         } else {
                             alert('Please fill in both Login and Name fields.');
