@@ -18,20 +18,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Function to update an existing entry in the roster
+    function updateEntry(badgeNumber, login, name) {
+        const index = rosterData.findIndex(entry => entry.badgeNumber === badgeNumber);
+        if (index !== -1) {
+            rosterData[index] = { badgeNumber, login, name };
+            localStorage.setItem('rosterData', JSON.stringify(rosterData));
+            renderRosterData();
+        }
+    }
+
     // Function to add a new entry to the roster
     function addNewEntry(badgeNumber, login, name) {
-        const newRow = document.createElement('div');
-        newRow.className = 'row mt-3';
-        newRow.innerHTML = `
-            <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
-            <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
-            <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
-        `;
-        rosterContent.appendChild(newRow);
+        const existingEntry = rosterData.find(entry => entry.badgeNumber === badgeNumber);
+        if (existingEntry) {
+            updateEntry(badgeNumber, login, name);
+        } else {
+            const newRow = document.createElement('div');
+            newRow.className = 'row mt-3';
+            newRow.innerHTML = `
+                <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
+                <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
+                <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
+            `;
+            rosterContent.appendChild(newRow);
 
-        // Save to rosterData and localStorage
-        rosterData.push({ badgeNumber, login, name });
-        localStorage.setItem('rosterData', JSON.stringify(rosterData));
+            // Save to rosterData and localStorage
+            rosterData.push({ badgeNumber, login, name });
+            localStorage.setItem('rosterData', JSON.stringify(rosterData));
+        }
     }
 
     // Render the saved roster data on page load
