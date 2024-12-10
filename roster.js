@@ -99,6 +99,14 @@ document.addEventListener('DOMContentLoaded', function() {
         input.click();
     });
 
-     // Update the home link
-     document.querySelector('a[href="main.html"]').setAttribute('href', 'index.html');
+    // Add event listener to the "Export Roster" button
+    document.getElementById('exportRosterButton').addEventListener('click', function() {
+        const worksheet = XLSX.utils.json_to_sheet(rosterData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Roster');
+        XLSX.writeFile(workbook, 'roster.xlsx');
+    });
+
+    // Update the home link
+    document.querySelector('a[href="main.html"]').setAttribute('href', 'index.html');
 });
