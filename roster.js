@@ -109,6 +109,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update the home link
     document.querySelector('a[href="main.html"]').setAttribute('href', 'index.html');
-    
-    // Use the actions in the editor toolbar to either undo your changes or overwrite the content of the file with your changes.
 });
