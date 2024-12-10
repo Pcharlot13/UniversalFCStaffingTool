@@ -54,32 +54,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add event listener to the "New Entry" button
     document.getElementById('newEntryButton').addEventListener('click', function() {
-        const badgeNumber = prompt("Badge Number?").trim();
-        const matchedEntry = rosterData.find(entry => entry.badgeNumber === badgeNumber);
-        let login, name;
+        const badgeNumberInput = document.getElementById('badgeNumberInput');
+        badgeNumberInput.value = '';
+        const loginInput = document.getElementById('loginInput');
+        loginInput.value = '';
+        const nameInput = document.getElementById('nameInput');
+        nameInput.value = '';
 
-        if (matchedEntry) {
-            login = matchedEntry.login;
-            name = matchedEntry.name;
-            addNewEntry(badgeNumber, login, name);
-        } else {
-            const badgeNumberInput = document.getElementById('badgeNumberInput');
-            badgeNumberInput.value = badgeNumber;
-            const associateModal = new bootstrap.Modal(document.getElementById('associateModal'));
-            associateModal.show();
+        const associateModal = new bootstrap.Modal(document.getElementById('associateModal'));
+        associateModal.show();
 
-            document.getElementById('saveAssociateButton').addEventListener('click', function() {
-                login = document.getElementById('loginInput').value.trim();
-                name = document.getElementById('nameInput').value.trim();
+        document.getElementById('saveAssociateButton').addEventListener('click', function() {
+            const badgeNumber = badgeNumberInput.value.trim();
+            const login = loginInput.value.trim();
+            const name = nameInput.value.trim();
 
-                if (login && name) {
-                    addNewEntry(badgeNumber, login, name);
-                    associateModal.hide();
-                } else {
-                    alert('Please fill in both Login and Name fields.');
-                }
-            }, { once: true });
-        }
+            if (badgeNumber && login && name) {
+                addNewEntry(badgeNumber, login, name);
+                associateModal.hide();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }, { once: true });
     });
 
     // Add event listener to the "Upload Roster" button
