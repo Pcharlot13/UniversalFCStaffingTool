@@ -40,12 +40,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener to the "New Entry" button
     document.getElementById('newEntryButton').addEventListener('click', function() {
         const badgeNumber = prompt("Badge Number?").trim();
-        const login = prompt("Login?");
-        const name = prompt("Name?");
+        const matchedEntry = rosterData.find(entry => entry.badgeNumber === badgeNumber);
+        let login, name;
 
-        if (badgeNumber !== null && login !== null && name !== null) {
-            console.log('Adding new entry:', { badgeNumber, login, name }); // Debugging log
+        if (matchedEntry) {
+            login = matchedEntry.login;
+            name = matchedEntry.name;
             addNewEntry(badgeNumber, login, name);
+        } else {
+            const badgeNumberInput = document.getElementById('badgeNumberInput');
+            badgeNumberInput.value = badgeNumber;
+            const associateModal = new bootstrap.Modal(document.getElementById('associateModal'));
+            associateModal.show();
+
+            document.getElementById('saveAssociateButton').addEventListener('click', function() {
+                login = document.getElementById('loginInput').value.trim();
+                name = document.getElementById('nameInput').value.trim();
+
+                if (login && name) {
+                    addNewEntry(badgeNumber, login, name);
+                    associateModal.hide();
+                } else {
+                    alert('Please fill in both Login and Name fields.');
+                }
+            }, { once: true });
         }
     });
 
@@ -79,6 +97,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         input.click();
+    });
+
+    // Add event listener to the "Export Roster" button
+    document.getElementById('exportRosterButton').addEventListener('click', function() {
+        const worksheet = XLSX.utils.json_to_sheet(rosterData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Roster');
+        XLSX.writeFile(workbook, 'roster.xlsx');
     });
 
     // Update the home link

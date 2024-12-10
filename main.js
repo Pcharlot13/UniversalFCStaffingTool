@@ -45,31 +45,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 let login, name;
                 if (matchedEntry) {
-                    alert("Associate found in roster");
                     login = matchedEntry.login;
                     name = matchedEntry.name;
+                    addAssociateToArea(index, badgeNumber, login, name);
                 } else {
-                    alert("Associate not found in roster");
-                    login = prompt("Login?");
-                    name = prompt("Name?");
-                }
+                    const badgeNumberInput = document.getElementById('badgeNumberInput');
+                    badgeNumberInput.value = badgeNumber;
+                    const associateModal = new bootstrap.Modal(document.getElementById('associateModal'));
+                    associateModal.show();
 
-                if (badgeNumber && login && name) {
-                    const associateRow = document.createElement('div');
-                    associateRow.className = 'row mt-3';
-                    associateRow.innerHTML = `
-                        <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
-                        <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
-                        <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
-                    `;
-                    areaContent.appendChild(associateRow);
+                    document.getElementById('saveAssociateButton').addEventListener('click', function() {
+                        login = document.getElementById('loginInput').value.trim();
+                        name = document.getElementById('nameInput').value.trim();
 
-                    // Save to areasData and localStorage
-                    areasData[index].associates.push({ badgeNumber, login, name });
-                    localStorage.setItem('areasData', JSON.stringify(areasData));
+                        if (login && name) {
+                            addAssociateToArea(index, badgeNumber, login, name);
+                            addNewEntryToRoster(badgeNumber, login, name);
+                            associateModal.hide();
+                        } else {
+                            alert('Please fill in both Login and Name fields.');
+                        }
+                    }, { once: true });
                 }
             });
         });
+    }
+
+    function addAssociateToArea(areaIndex, badgeNumber, login, name) {
+        const areaContent = document.querySelectorAll('.areaContent')[areaIndex];
+        const associateRow = document.createElement('div');
+        associateRow.className = 'row mt-3';
+        associateRow.innerHTML = `
+            <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
+            <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
+            <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
+        `;
+        areaContent.appendChild(associateRow);
+
+        // Save to areasData and localStorage
+        areasData[areaIndex].associates.push({ badgeNumber, login, name });
+        localStorage.setItem('areasData', JSON.stringify(areasData));
+    }
+
+    function addNewEntryToRoster(badgeNumber, login, name) {
+        const rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
+        rosterData.push({ badgeNumber, login, name });
+        localStorage.setItem('rosterData', JSON.stringify(rosterData));
     }
 
     // Render the saved areas on page load
