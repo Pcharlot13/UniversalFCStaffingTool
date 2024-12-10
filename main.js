@@ -75,7 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render the saved areas on page load
     renderAreas();
 
-    document.getElementById('newButton').addEventListener('click', function() {
+    document.getElementById('newButton').addEventListener('click', () => {
+        // Add functionality for the new button
         const titleOfArea = prompt("Title of Area:");
 
         if (titleOfArea !== null) {
@@ -89,7 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('clearDataButton').addEventListener('click', function() {
+    document.getElementById('clearDataButton').addEventListener('click', () => {
+        // Add functionality to clear all data
         if (confirm("Are you sure you want to clear all data?")) {
             localStorage.removeItem('areasData');
             localStorage.removeItem('rosterData');
