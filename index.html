@@ -6,6 +6,33 @@
     <title>Dynamic Cell Generator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
+    <style>
+        .circle-graph {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+        .circle-segment {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            clip: rect(0, 100px, 200px, 0);
+            transform: rotate(calc(var(--percentage) * 3.6deg));
+        }
+        .circle-segment::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: currentColor;
+            clip: rect(0, 100px, 200px, 0);
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -25,6 +52,9 @@
                     <li class="nav-item">
                         <button id="clearDataButton" class="btn btn-danger nav-link">Clear All Data</button>
                     </li>
+                    <li class="nav-item">
+                        <button id="headcountButton" class="btn btn-info nav-link">Headcount</button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -35,6 +65,59 @@
             <div class="col-md-6" id="rightColumn"></div>
         </div>
     </div>
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="associateModal" tabindex="-1" aria-labelledby="associateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white" style="opacity: 0.9;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="associateModalLabel">Add Associate</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="badgeNumberInput" class="form-label">Badge Number</label>
+                        <input type="text" class="form-control" id="badgeNumberInput" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginInput" class="form-label">Login</label>
+                        <input type="text" class="form-control" id="loginInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nameInput" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="nameInput">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveAssociateButton">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Modal for Headcount -->
+    <div class="modal fade" id="headcountModal" tabindex="-1" aria-labelledby="headcountModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="headcountModalLabel">Headcount</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex">
+                    <div id="circleGraph" class="circle-graph me-3"></div>
+                    <div id="headcountContent">
+                        <!-- Headcount content will be dynamically generated here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
