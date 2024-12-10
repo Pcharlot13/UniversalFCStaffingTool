@@ -6,15 +6,33 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderRosterData() {
         console.log('Rendering roster data:', rosterData); // Debugging log
         rosterContent.innerHTML = '';
-        rosterData.forEach(item => {
-            const newRow = document.createElement('div');
-            newRow.className = 'row mt-3';
-            newRow.innerHTML = `
-                <div class="col-md-4"><input type="text" class="form-control" value="${item.badgeNumber}" placeholder="Badge Number"></div>
-                <div class="col-md-4"><input type="text" class="form-control" value="${item.login}" placeholder="Login"></div>
-                <div class="col-md-4"><input type="text" class="form-control" value="${item.name}" placeholder="Name"></div>
+        let row;
+        rosterData.forEach((item, index) => {
+            if (index % 3 === 0) {
+                row = document.createElement('div');
+                row.className = 'd-flex justify-content-around mt-3 mb-3'; // Added mb-3 for space between rows
+                rosterContent.appendChild(row);
+            }
+            const card = document.createElement('div');
+            card.className = 'card text-white bg-dark mb-3 text-center';
+            card.style.width = '18rem';
+            card.style.margin = '0 10px'; // Added margin for space between cards
+            card.innerHTML = `
+                <div class="card-body">
+                    <h4 class="card-title">${item.name} <i class="bi bi-clipboard copy-icon" data-copy="${item.name}"></i></h4>
+                    <p class="card-text">${item.badgeNumber} <i class="bi bi-clipboard copy-icon" data-copy="${item.badgeNumber}"></i></p>
+                    <small class="card-text">${item.login} <i class="bi bi-clipboard copy-icon" data-copy="${item.login}"></i></small>
+                </div>
             `;
-            rosterContent.appendChild(newRow);
+            row.appendChild(card);
+        });
+
+        // Add event listeners to copy icons
+        document.querySelectorAll('.copy-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const textToCopy = this.getAttribute('data-copy');
+                navigator.clipboard.writeText(textToCopy);
+            });
         });
     }
 
@@ -34,18 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (existingEntry) {
             updateEntry(badgeNumber, login, name);
         } else {
-            const newRow = document.createElement('div');
-            newRow.className = 'row mt-3';
-            newRow.innerHTML = `
-                <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
-                <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
-                <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
-            `;
-            rosterContent.appendChild(newRow);
-
-            // Save to rosterData and localStorage
             rosterData.push({ badgeNumber, login, name });
             localStorage.setItem('rosterData', JSON.stringify(rosterData));
+            renderRosterData();
         }
     }
 
@@ -54,64 +63,66 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add event listener to the "New Entry" button
     document.getElementById('newEntryButton').addEventListener('click', function() {
-        const badgeNumber = prompt("Badge Number?").trim();
-        const matchedEntry = rosterData.find(entry => entry.badgeNumber === badgeNumber);
-        let login, name;
+        const badgeNumberInput = document.getElementById('badgeNumberInput');
+        badgeNumberInput.value = '';
+        const loginInput = document.getElementById('loginInput');
+        loginInput.value = '';
+        const nameInput = document.getElementById('nameInput');
+        nameInput.value = '';
 
-        if (matchedEntry) {
-            login = matchedEntry.login;
-            name = matchedEntry.name;
-            addNewEntry(badgeNumber, login, name);
-        } else {
-            const badgeNumberInput = document.getElementById('badgeNumberInput');
-            badgeNumberInput.value = badgeNumber;
-            const associateModal = new bootstrap.Modal(document.getElementById('associateModal'));
-            associateModal.show();
+        const associateModal = new bootstrap.Modal(document.getElementById('associateModal'));
+        associateModal.show();
 
-            document.getElementById('saveAssociateButton').addEventListener('click', function() {
-                login = document.getElementById('loginInput').value.trim();
-                name = document.getElementById('nameInput').value.trim();
+        document.getElementById('saveAssociateButton').addEventListener('click', function() {
+            const badgeNumber = badgeNumberInput.value.trim();
+            const login = loginInput.value.trim();
+            const name = nameInput.value.trim();
 
-                if (login && name) {
-                    addNewEntry(badgeNumber, login, name);
-                    associateModal.hide();
-                } else {
-                    alert('Please fill in both Login and Name fields.');
-                }
-            }, { once: true });
-        }
+            if (badgeNumber && login && name) {
+                addNewEntry(badgeNumber, login, name);
+                associateModal.hide();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }, { once: true });
     });
 
     // Add event listener to the "Upload Roster" button
     document.getElementById('uploadRosterButton').addEventListener('click', function() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.xlsx, .xls';
-        input.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+        const uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
+        uploadModal.show();
 
-                    if (rows.length > 0 && rows[0].length === 3) {
-                        rows.forEach((row, index) => {
-                            if (index > 0) { // Skip header row
-                                const [badgeNumber, login, name] = row;
-                                addNewEntry(badgeNumber, login, name);
-                            }
-                        });
-                    } else {
-                        alert('Invalid file format. Please ensure the file has three columns: Badge Number, Login, and Name.');
-                    }
-                };
-                reader.readAsArrayBuffer(file);
-            }
-        });
-        input.click();
+        document.getElementById('continueUploadButton').addEventListener('click', function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.xlsx, .xls';
+            input.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                        const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+                        if (rows.length > 0 && rows[0].length === 3) {
+                            rows.forEach((row, index) => {
+                                if (index > 0) { // Skip header row
+                                    const [badgeNumber, login, name] = row;
+                                    addNewEntry(badgeNumber, login, name);
+                                }
+                            });
+                        } else {
+                            alert('Invalid file format. Please ensure the file has three columns: Badge Number, Login, and Name.');
+                        }
+                    };
+                    reader.readAsArrayBuffer(file);
+                }
+            });
+            input.click();
+            uploadModal.hide();
+        }, { once: true });
     });
 
     // Update the home link

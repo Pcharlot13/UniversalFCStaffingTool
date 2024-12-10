@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const leftColumn = document.getElementById('leftColumn');
-    const rightColumn = document.getElementById('rightColumn');
-    const areasData = JSON.parse(localStorage.getItem('areasData')) || [];
+    const container = document.getElementById('container');
+    let areasData = JSON.parse(localStorage.getItem('areasData')) || [];
+    let rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
     const colors = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'bg-light', 'bg-dark'];
 
     // Function to render areas
     function renderAreas() {
-        leftColumn.innerHTML = '';
-        rightColumn.innerHTML = '';
+        container.innerHTML = '';
         areasData.forEach((area, index) => {
             const newArea = document.createElement('div');
-            newArea.className = `mt-3 p-3 text-white ${colors[index % colors.length]}`;
+            newArea.className = `mt-3 p-3 text-white draggable-area col-md-6 ${colors[index % colors.length]}`;
+            newArea.setAttribute('data-index', index);
             newArea.innerHTML = `
                 <div class="d-flex align-items-center">
                     <h3 class="me-2">${area.title}</h3>
@@ -21,27 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const areaContent = newArea.querySelector('.areaContent');
             area.associates.forEach(associate => {
-                const associateRow = document.createElement('div');
-                associateRow.className = 'row mt-3';
-                associateRow.innerHTML = `
-                    <div class="col-md-4"><input type="text" class="form-control badge-number" value="${associate.badgeNumber}" placeholder="Badge Number"></div>
-                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.login}" placeholder="Login" readonly></div>
-                    <div class="col-md-4"><input type="text" class="form-control" value="${associate.name}" placeholder="Name" readonly></div>
-                `;
-                areaContent.appendChild(associateRow);
+                if (associate) {
+                    const associateCard = createAssociateCard(associate);
+                    areaContent.appendChild(associateCard);
+                }
             });
 
-            // Alternate between left and right columns
-            if (leftColumn.children.length <= rightColumn.children.length) {
-                leftColumn.appendChild(newArea);
-            } else {
-                rightColumn.appendChild(newArea);
-            }
+            container.appendChild(newArea);
 
             // Add event listener to the plus sign button
             newArea.querySelector('.newAAButton').addEventListener('click', function() {
                 const badgeNumber = prompt("Badge Number?").trim();
-                const rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
                 const matchedEntry = rosterData.find(entry => String(entry.badgeNumber).trim() === badgeNumber);
 
                 let login, name;
@@ -61,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (login && name) {
                             addAssociate(badgeNumber, login, name, index, areaContent);
                             // Update roster data
-                            const rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
                             rosterData.push({ badgeNumber, login, name });
                             localStorage.setItem('rosterData', JSON.stringify(rosterData));
                             associateModal.hide();
@@ -74,42 +63,111 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function addAssociate(badgeNumber, login, name, index, areaContent) {
-        const associateRow = document.createElement('div');
-        associateRow.className = 'row mt-3';
-        associateRow.innerHTML = `
-            <div class="col-md-4"><input type="text" class="form-control badge-number" value="${badgeNumber}" placeholder="Badge Number"></div>
-            <div class="col-md-4"><input type="text" class="form-control" value="${login}" placeholder="Login" readonly></div>
-            <div class="col-md-4"><input type="text" class="form-control" value="${name}" placeholder="Name" readonly></div>
+    function createAssociateCard(associate) {
+        if (!associate) return null;
+
+        const card = document.createElement('div');
+        card.className = 'card text-white bg-dark mb-3 text-center draggable-associate';
+        card.setAttribute('draggable', 'true');
+        card.setAttribute('data-badge-number', associate.badgeNumber);
+        card.innerHTML = `
+            <div class="card-body">
+                <h4 class="card-title">${associate.name} <i class="bi bi-grip-horizontal dragButton"></i></h4>
+                <p class="card-text">${associate.badgeNumber}</p>
+                <small class="card-text">${associate.login}</small>
+            </div>
         `;
-        areaContent.appendChild(associateRow);
+
+        card.addEventListener('dragstart', handleAssociateDragStart);
+        card.addEventListener('dragover', handleAssociateDragOver);
+        card.addEventListener('drop', handleAssociateDrop);
+        card.addEventListener('dragend', handleAssociateDragEnd);
+
+        return card;
+    }
+
+    function addAssociate(badgeNumber, login, name, index, areaContent) {
+        const associate = { badgeNumber, login, name };
+        const associateCard = createAssociateCard(associate);
+        areaContent.appendChild(associateCard);
 
         // Save to areasData and localStorage
-        areasData[index].associates.push({ badgeNumber, login, name });
+        areasData[index].associates.push(associate);
         localStorage.setItem('areasData', JSON.stringify(areasData));
+    }
 
-        // Add to rosterData and localStorage
-        const rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
-        rosterData.push({ badgeNumber, login, name });
-        localStorage.setItem('rosterData', JSON.stringify(rosterData));
+    function handleAssociateDragStart(e) {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', this.dataset.badgeNumber);
+        this.classList.add('dragging');
+    }
+
+    function handleAssociateDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        this.classList.add('drag-over');
+    }
+
+    function handleAssociateDrop(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const draggingElement = document.querySelector('.dragging');
+        const draggedBadgeNumber = e.dataTransfer.getData('text/plain');
+        const targetAreaIndex = this.closest('.draggable-area').dataset.index;
+        const targetArea = areasData[targetAreaIndex];
+
+        if (!targetArea.associates.find(associate => associate.badgeNumber === draggedBadgeNumber)) {
+            const draggedAssociate = areasData.flatMap(area => area.associates).find(associate => associate.badgeNumber === draggedBadgeNumber);
+            targetArea.associates.push(draggedAssociate);
+            areasData.forEach(area => {
+                area.associates = area.associates.filter(associate => associate.badgeNumber !== draggedBadgeNumber);
+            });
+            updateAreasData();
+            renderAreas();
+        }
+        this.classList.remove('drag-over');
+    }
+
+    function handleAssociateDragEnd() {
+        this.classList.remove('dragging');
+        document.querySelectorAll('.drag-over').forEach(element => {
+            element.classList.remove('drag-over');
+        });
+    }
+
+    function updateAreasData() {
+        localStorage.setItem('areasData', JSON.stringify(areasData));
     }
 
     // Render the saved areas on page load
     renderAreas();
 
     document.getElementById('newButton').addEventListener('click', () => {
-        // Add functionality for the new button
-        const titleOfArea = prompt("Title of Area:");
+        const newAreaInput = document.getElementById('newAreaInput');
+        newAreaInput.value = ''; // Clear the input field
+        const newAreaModal = new bootstrap.Modal(document.getElementById('newAreaModal'));
+        newAreaModal.show();
 
-        if (titleOfArea !== null) {
-            const newArea = {
-                title: titleOfArea,
-                associates: []
-            };
-            areasData.push(newArea);
-            localStorage.setItem('areasData', JSON.stringify(areasData));
-            renderAreas();
-        }
+        document.getElementById('enterNewAreaButton').addEventListener('click', function() {
+            const titleOfArea = newAreaInput.value.trim();
+            if (titleOfArea) {
+                const existingArea = areasData.find(area => area.title === titleOfArea);
+                if (existingArea) {
+                    alert('An area with this title already exists.');
+                } else {
+                    const newArea = {
+                        title: titleOfArea,
+                        associates: []
+                    };
+                    areasData.push(newArea);
+                    localStorage.setItem('areasData', JSON.stringify(areasData));
+                    renderAreas();
+                    newAreaModal.hide();
+                }
+            } else {
+                alert('Please enter a title for the new area.');
+            }
+        }, { once: true });
     });
 
     document.getElementById('clearDataButton').addEventListener('click', () => {
@@ -117,7 +175,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (confirm("Are you sure you want to clear all data?")) {
             localStorage.removeItem('areasData');
             localStorage.removeItem('rosterData');
-            location.reload();
+            areasData = [];
+            rosterData = [];
+            renderAreas();
         }
     });
 
@@ -148,5 +208,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const headcountModal = new bootstrap.Modal(document.getElementById('headcountModal'));
         headcountModal.show();
+    });
+
+    document.getElementById('presetsButton').addEventListener('click', () => {
+        const presetsModal = new bootstrap.Modal(document.getElementById('presetsModal'));
+        presetsModal.show();
+    });
+
+    document.querySelectorAll('.preset-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const preset = this.getAttribute('data-preset');
+            const areas = {
+                Inbound: [{ title: 'Inbound Area', associates: [] }],
+                Outbound: [{ title: 'Outbound Area', associates: [] }],
+                Mansort: [{ title: 'Mansort Area', associates: [] }],
+                NPC: [{ title: 'NPC Area', associates: [] }],
+                '20lb': [{ title: '20lb Area', associates: [] }],
+                '5lb': [{ title: '5lb Area', associates: [] }],
+                Flow: [{ title: 'Flow Area', associates: [] }],
+                RPND: [{ title: 'RPND Area', associates: [] }]
+            };
+
+            localStorage.setItem('areasData', JSON.stringify(areas[preset]));
+            renderAreas();
+            const presetsModal = bootstrap.Modal.getInstance(document.getElementById('presetsModal'));
+            presetsModal.hide();
+        });
     });
 });
