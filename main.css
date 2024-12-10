@@ -2,4 +2,44 @@
     margin-top: 20px;
 }
 
-/* Remove the plus-sign styles */
+/* Add margin to buttons */
+.navbar-nav .nav-item .btn {
+    margin: 0 5px;
+}
+
+/* Styles for copy icons */
+.copy-icon {
+    opacity: 0.5;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 0.8em; /* Adjusted size */
+}
+
+.copy-icon:hover {
+    opacity: 1;
+}
+
+/* Styles for draggable areas */
+.draggable-area {
+    transition: transform 0.2s ease-in-out;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+
+.drag-over {
+    transform: scale(1.05);
+}
+
+/* Flexbox container for areas */
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.col-md-6 {
+    flex: 0 0 48%;
+    max-width: 48%;
+}
