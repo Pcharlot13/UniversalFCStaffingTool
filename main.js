@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const container = document.getElementById('container');
     let areasData = JSON.parse(localStorage.getItem('areasData')) || [];
     let rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
-    const colors = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'bg-light', 'bg-dark'];
+    const colors = ['bg-dark-blue', 'bg-dark-cyan', 'bg-dark-teal', 'bg-dark-navy', 'bg-dark-slate', 'bg-dark-steel', 'bg-dark-azure', 'bg-dark-indigo'];
 
     function showDeleteConfirmationModal(message, onDelete) {
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));

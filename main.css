@@ -25,6 +25,7 @@
     padding: 10px; /* Add padding to areas */
     overflow: hidden; /* Ensure ID cards stay within the bounds of the area */
     position: relative; /* Ensure buttons stay inside the area */
+    border-radius: 10px; /* Rounded corners for areas */
 }
 
 .draggable-area .btn {
@@ -89,4 +90,72 @@
     height: 100%;
     background-color: inherit; /* Use the inherited background color */
     clip: rect(0, 100px, 200px, 0);
+}
+
+/* Define the new dark-themed blue color classes */
+.bg-dark-blue {
+    background-color: #1e1e3f !important;
+}
+
+.bg-dark-cyan {
+    background-color: #007acc !important;
+}
+
+.bg-dark-teal {
+    background-color: #008080 !important;
+}
+
+.bg-dark-navy {
+    background-color: #000080 !important;
+}
+
+.bg-dark-slate {
+    background-color: #2f4f4f !important;
+}
+
+.bg-dark-steel {
+    background-color: #4682b4 !important;
+}
+
+.bg-dark-azure {
+    background-color: #007fff !important;
+}
+
+.bg-dark-indigo {
+    background-color: #4b0082 !important;
+}
+
+body {
+    color: white !important;
+    background-color: #121212 !important; /* Deep dark black-grey background */
+}
+
+.navbar, .navbar-nav .nav-link, .modal-content, .card, .list-group-item {
+    color: white !important;
+    background-color: #1e1e1e !important; /* Deep dark black-grey background */
+}
+
+.navbar-light .navbar-brand, .navbar-light .navbar-nav .nav-link {
+    color: white !important;
+}
+
+.modal-content {
+    background-color: #1e1e1e !important;
+}
+
+.card {
+    background-color: #2e2e2e !important;
+    border-radius: 10px; /* Rounded corners for ID cards */
+}
+
+.list-group-item {
+    background-color: #2e2e2e !important;
+}
+
+.btn {
+    transition: background-color 0.2s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.btn:hover {
+    filter: brightness(85%); /* Slight darkening effect on hover */
 }
