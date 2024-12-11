@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const card = document.createElement('div');
             card.className = 'card text-white bg-dark mb-3 text-center';
-            card.style.width = '18rem';
-            card.style.margin = '0 10px'; // Added margin for space between cards
+            card.style.width = '12rem'; // Reduced width
+            card.style.margin = '0 5px'; // Adjusted margin
             card.innerHTML = `
                 <div class="card-body">
-                    <h4 class="card-title">${item.name} <i class="bi bi-clipboard copy-icon" data-copy="${item.name}"></i></h4>
-                    <p class="card-text">${item.badgeNumber} <i class="bi bi-clipboard copy-icon" data-copy="${item.badgeNumber}"></i></p>
-                    <small class="card-text">${item.login} <i class="bi bi-clipboard copy-icon" data-copy="${item.login}"></i></small>
+                    <h4 class="card-title" style="font-size: 1.2rem;">${item.name} <i class="bi bi-clipboard copy-icon" data-copy="${item.name}"></i></h4>
+                    <p class="card-text" style="font-size: 1rem;">${item.badgeNumber} <i class="bi bi-clipboard copy-icon" data-copy="${item.badgeNumber}"></i></p>
+                    <small class="card-text" style="font-size: 0.9rem;">${item.login} <i class="bi bi-clipboard copy-icon" data-copy="${item.login}"></i></small>
                 </div>
             `;
             row.appendChild(card);
@@ -81,6 +81,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (badgeNumber && login && name) {
                 addNewEntry(badgeNumber, login, name);
                 associateModal.hide();
+                // Clear input fields after saving
+                badgeNumberInput.value = '';
+                loginInput.value = '';
+                nameInput.value = '';
             } else {
                 alert('Please fill in all fields.');
             }
