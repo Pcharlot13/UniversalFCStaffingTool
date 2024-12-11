@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button class="btn btn-light newAAButton" data-index="${index}">+</button>
                         <button class="btn btn-light actionButton1" data-index="${index}"><i class="bi bi-gear"></i></button>
                         <button class="btn btn-light actionButton2" data-index="${index}"><i class="bi bi-trash"></i></button>
+                        <button class="btn btn-light removeAssociatesButton" data-index="${index}"><i class="bi bi-x-circle"></i></button>
                     </div>
                 </div>
                 <div class="areaContent mt-3"></div>
@@ -77,6 +78,39 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             actionButton2.addEventListener('click', function() {
                 deleteArea(index);
+            });
+
+            // Add event listener to the remove associates button
+            const removeAssociatesButton = newArea.querySelector('.removeAssociatesButton');
+            removeAssociatesButton.addEventListener('click', function() {
+                const areaIndex = this.getAttribute('data-index');
+                const removeAssociatesModal = new bootstrap.Modal(document.getElementById('removeAssociatesModal'));
+                const associatesList = document.getElementById('associatesList');
+                associatesList.innerHTML = '';
+
+                areasData[areaIndex].associates.forEach((associate, associateIndex) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    listItem.innerHTML = `
+                        ${associate.name}
+                        <i class="bi bi-trash remove-associate-icon" data-area-index="${areaIndex}" data-associate-index="${associateIndex}"></i>
+                    `;
+                    associatesList.appendChild(listItem);
+                });
+
+                document.querySelectorAll('.remove-associate-icon').forEach(icon => {
+                    icon.addEventListener('click', function() {
+                        const areaIndex = this.getAttribute('data-area-index');
+                        const associateIndex = this.getAttribute('data-associate-index');
+                        areasData[areaIndex].associates.splice(associateIndex, 1);
+                        localStorage.setItem('areasData', JSON.stringify(areasData));
+                        renderAreas();
+                        // Remove the list item from the modal
+                        this.parentElement.remove();
+                    });
+                });
+
+                removeAssociatesModal.show();
             });
 
             // Add drag and drop event listeners to the plus sign button
