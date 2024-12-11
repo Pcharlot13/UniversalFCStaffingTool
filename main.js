@@ -463,7 +463,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     { title: 'TDR', associates: [], stations: ['North', 'South'] },
                     { title: 'DRIVERS', associates: [], stations: ['North', 'South'] },
                     { title: 'JAM CLEAR', associates: [], stations: ['North', 'South'] },
-                    { title: 'DOCKSORT', associates: [], stations: ['North', 'South'] }
+                    { title: 'DOCKSORT', associates: [], stations: ['North', 'South'] },
+                    { title: 'North PIDS', associates: [], stations: ['PID4', 'PID5', 'PID6'] },
+                    { title: 'South PIDS', associates: [], stations: ['PID1', 'PID2', 'PID3'] }
                 ],
                 Outbound: [{ title: 'Outbound Area', associates: [] }],
                 Mansort: [{ title: 'Mansort Area', associates: [] }],
