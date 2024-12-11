@@ -44,10 +44,8 @@ This tool is perfect for small-to-medium-sized teams looking for a straightforwa
 
 ## Updates Log
 - **[11/6]**: Started the initial UI design.
-<<<<<<< HEAD
 - **[12/9]**: Created initial prototype, but branch became broken and unusable
 - **[12/9]**: Intigrated "developmental sequence" to bring more organization into project vision
 - **[12/9]**: Phase 1 mainly complete "UI Layout subject to change throughout build,"
 - **[12/10]**: Phase 2 completed, as well as a headcount pie chart for data driven tracking
-=======
 - **[Date]**: Started development of the drag-and-drop interface.
