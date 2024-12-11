@@ -58,14 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
             newArea.setAttribute('data-index', index);
             newArea.innerHTML = `
                 <div class="d-flex align-items-center justify-content-between">
-                    <h3 class="me-2">${area.title}</h3>
-                    <div>
+                    <div class="d-flex flex-row">
                         <button class="btn btn-light newAAButton" data-index="${index}">+</button>
                         <button class="btn btn-light actionButton1" data-index="${index}"><i class="bi bi-gear"></i></button>
                         <button class="btn btn-light actionButton2" data-index="${index}"><i class="bi bi-trash"></i></button>
                         <button class="btn btn-light removeAssociatesButton" data-index="${index}"><i class="bi bi-x-circle"></i></button>
                     </div>
                 </div>
+                <h3 class="mt-2">${area.title}</h3>
                 <div class="areaContent mt-3"></div>
             `;
 
@@ -313,7 +313,18 @@ document.addEventListener('DOMContentLoaded', function() {
         e.stopPropagation();
         e.preventDefault();
         const draggedBadgeNumber = e.dataTransfer.getData('text/plain');
+
+        if (targetAreaIndex < 0 || targetAreaIndex >= areasData.length) {
+            console.error('Invalid target area index:', targetAreaIndex);
+            return;
+        }
+
         const targetArea = areasData[targetAreaIndex];
+
+        if (!targetArea) {
+            console.error('Target area is undefined');
+            return;
+        }
 
         const draggedAssociate = areasData.flatMap(area => area.associates).find(associate => associate.badgeNumber === draggedBadgeNumber);
         if (draggedAssociate) {
@@ -406,15 +417,20 @@ document.addEventListener('DOMContentLoaded', function() {
             headcountContent.appendChild(areaHeadcount);
         });
 
-        // Create the circle graph
+        // Create the pie chart
         const circleGraph = document.getElementById('circleGraph');
         circleGraph.innerHTML = '';
+        let cumulativePercentage = 0;
+
         areasData.forEach((area, index) => {
             const percentage = (area.associates.length / totalAssociates) * 100;
             const circleSegment = document.createElement('div');
-            circleSegment.className = `circle-segment ${colors[index % colors.length]}`;
+            circleSegment.className = `circle-segment`;
             circleSegment.style.setProperty('--percentage', percentage);
+            circleSegment.style.transform = `rotate(${cumulativePercentage * 3.6}deg)`;
+            circleSegment.style.backgroundColor = colors[index % colors.length];
             circleGraph.appendChild(circleSegment);
+            cumulativePercentage += percentage;
         });
 
         const headcountModal = new bootstrap.Modal(document.getElementById('headcountModal'));
