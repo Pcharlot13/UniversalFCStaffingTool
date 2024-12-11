@@ -135,8 +135,8 @@ body {
     background-color: #1e1e1e !important; /* Deep dark black-grey background */
 }
 
-.navbar-light .navbar-brand, .navbar-light .navbar-nav .nav-link {
-    color: white !important;
+.navbar {
+    background-color: #1e1e1e !important; /* Deep dark black-grey background */
 }
 
 .modal-content {

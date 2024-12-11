@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Please enter a station name.');
             }
         };
+        document.getElementById('addStationModal').addEventListener('hidden.bs.modal', function () {
+            document.body.classList.remove('modal-open');
+            document.querySelector('.modal-backdrop').remove();
+        });
         addStationModal.show();
     }
 
