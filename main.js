@@ -14,9 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
             newArea.className = `mt-3 p-3 text-white draggable-area ${areaSizeClass} ${colors[index % colors.length]}`;
             newArea.setAttribute('data-index', index);
             newArea.innerHTML = `
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center justify-content-between">
                     <h3 class="me-2">${area.title}</h3>
-                    <button class="btn btn-light newAAButton" data-index="${index}">+</button>
+                    <div>
+                        <button class="btn btn-light newAAButton" data-index="${index}">+</button>
+                        <button class="btn btn-light actionButton1" data-index="${index}"><i class="bi bi-gear"></i></button>
+                        <button class="btn btn-light actionButton2" data-index="${index}"><i class="bi bi-trash"></i></button>
+                    </div>
                 </div>
                 <div class="areaContent mt-3"></div>
             `;
@@ -62,6 +66,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }, { once: true });
                 }
+            });
+
+            // Add event listeners to the new action buttons
+            const actionButton1 = newArea.querySelector('.actionButton1');
+            const actionButton2 = newArea.querySelector('.actionButton2');
+            actionButton1.addEventListener('click', function() {
+                const actionModal1 = new bootstrap.Modal(document.getElementById('actionModal1'));
+                actionModal1.show();
+            });
+            actionButton2.addEventListener('click', function() {
+                deleteArea(index);
             });
 
             // Add drag and drop event listeners to the plus sign button
@@ -150,6 +165,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateAreasData() {
         localStorage.setItem('areasData', JSON.stringify(areasData));
+    }
+
+    function deleteArea(index) {
+        areasData.splice(index, 1);
+        updateAreasData();
+        renderAreas();
     }
 
     // Render the saved areas on page load
