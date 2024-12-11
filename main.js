@@ -456,7 +456,15 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const preset = this.getAttribute('data-preset');
             const areas = {
-                Inbound: [{ title: 'Inbound Area', associates: [] }],
+                Inbound: [
+                    { title: 'PG & LEADERSHIP', associates: [], stations: ['PA', 'PG'] },
+                    { title: 'PARCEL', associates: [], stations: Array.from({ length: 17 }, (_, i) => (206 + i).toString()) },
+                    { title: 'WATERSPIDER', associates: [], stations: ['North', 'South'] },
+                    { title: 'TDR', associates: [], stations: ['North', 'South'] },
+                    { title: 'DRIVERS', associates: [], stations: ['North', 'South'] },
+                    { title: 'JAM CLEAR', associates: [], stations: ['North', 'South'] },
+                    { title: 'DOCKSORT', associates: [], stations: ['North', 'South'] }
+                ],
                 Outbound: [{ title: 'Outbound Area', associates: [] }],
                 Mansort: [{ title: 'Mansort Area', associates: [] }],
                 NPC: [{ title: 'NPC Area', associates: [] }],
@@ -467,9 +475,11 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             localStorage.setItem('areasData', JSON.stringify(areas[preset]));
+            areasData = areas[preset]; // Update the areasData variable
             renderAreas();
             const presetsModal = bootstrap.Modal.getInstance(document.getElementById('presetsModal'));
             presetsModal.hide();
+            location.reload(); // Refresh the page
         });
     });
 });
