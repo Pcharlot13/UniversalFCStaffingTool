@@ -9,12 +9,14 @@ document.addEventListener('DOMContentLoaded', function() {
         container.innerHTML = '';
         areasData.forEach((area, index) => {
             const newArea = document.createElement('div');
-            newArea.className = `mt-3 p-3 text-white draggable-area col-md-6 ${colors[index % colors.length]}`;
+            const associateCount = area.associates.length;
+            const areaSizeClass = associateCount > 0 ? `col-md-${Math.min(associateCount * 2, 12)}` : 'col-md-6';
+            newArea.className = `mt-3 p-3 text-white draggable-area ${areaSizeClass} ${colors[index % colors.length]}`;
             newArea.setAttribute('data-index', index);
             newArea.innerHTML = `
                 <div class="d-flex align-items-center">
                     <h3 class="me-2">${area.title}</h3>
-                    <button class="btn btn-light newAAButton">+</button>
+                    <button class="btn btn-light newAAButton" data-index="${index}">+</button>
                 </div>
                 <div class="areaContent mt-3"></div>
             `;
@@ -30,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container.appendChild(newArea);
 
             // Add event listener to the plus sign button
-            newArea.querySelector('.newAAButton').addEventListener('click', function() {
+            const newAAButton = newArea.querySelector('.newAAButton');
+            newAAButton.addEventListener('click', function() {
                 const badgeNumber = prompt("Badge Number?").trim();
                 const matchedEntry = rosterData.find(entry => String(entry.badgeNumber).trim() === badgeNumber);
 
@@ -59,6 +62,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }, { once: true });
                 }
+            });
+
+            // Add drag and drop event listeners to the plus sign button
+            newAAButton.addEventListener('dragover', handleAssociateDragOver);
+            newAAButton.addEventListener('drop', function(e) {
+                handleAssociateDrop.call(this, e, index, areaContent);
             });
         });
     }
@@ -108,24 +117,28 @@ document.addEventListener('DOMContentLoaded', function() {
         this.classList.add('drag-over');
     }
 
-    function handleAssociateDrop(e) {
+    function handleAssociateDrop(e, targetAreaIndex, areaContent) {
         e.stopPropagation();
         e.preventDefault();
-        const draggingElement = document.querySelector('.dragging');
         const draggedBadgeNumber = e.dataTransfer.getData('text/plain');
-        const targetAreaIndex = this.closest('.draggable-area').dataset.index;
         const targetArea = areasData[targetAreaIndex];
 
-        if (!targetArea.associates.find(associate => associate.badgeNumber === draggedBadgeNumber)) {
-            const draggedAssociate = areasData.flatMap(area => area.associates).find(associate => associate.badgeNumber === draggedBadgeNumber);
-            targetArea.associates.push(draggedAssociate);
+        const draggedAssociate = areasData.flatMap(area => area.associates).find(associate => associate.badgeNumber === draggedBadgeNumber);
+        if (draggedAssociate) {
+            // Remove the associate from the previous area
             areasData.forEach(area => {
                 area.associates = area.associates.filter(associate => associate.badgeNumber !== draggedBadgeNumber);
             });
+
+            // Add the associate to the new area
+            targetArea.associates.push(draggedAssociate);
             updateAreasData();
             renderAreas();
         }
-        this.classList.remove('drag-over');
+
+        if (this.classList) {
+            this.classList.remove('drag-over');
+        }
     }
 
     function handleAssociateDragEnd() {

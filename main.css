@@ -37,9 +37,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    justify-content: flex-start; /* Ensure items start from the left */
 }
 
-.col-md-6 {
-    flex: 0 0 48%;
-    max-width: 48%;
+.col-md-6, .col-md-4, .col-md-8, .col-md-12 {
+    flex: 0 0 auto;
+    max-width: 100%;
 }
