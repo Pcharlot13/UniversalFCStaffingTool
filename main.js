@@ -34,6 +34,61 @@ document.addEventListener('DOMContentLoaded', function() {
         addStationModal.show();
     }
 
+    function showAssignAssociateModal(stationIndex, areaIndex) {
+        const assignAssociateModal = new bootstrap.Modal(document.getElementById('assignAssociateModal'));
+        const associateSelect = document.getElementById('associateSelect');
+        associateSelect.innerHTML = ''; // Clear the select options
+
+        areasData[areaIndex].associates.forEach((associate, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = associate.name;
+            associateSelect.appendChild(option);
+        });
+
+        document.getElementById('confirmAssignAssociateButton').onclick = function() {
+            const selectedAssociateIndex = associateSelect.value;
+            if (selectedAssociateIndex !== '') {
+                const associate = areasData[areaIndex].associates[selectedAssociateIndex];
+                areasData[areaIndex].stations[stationIndex].associates.push(associate);
+                updateAreasData();
+                renderAreas();
+                assignAssociateModal.hide();
+            } else {
+                alert('Please select an associate.');
+            }
+        };
+
+        assignAssociateModal.show();
+    }
+
+    function showRemoveAssociateModal(stationIndex, areaIndex) {
+        const removeAssociateModal = new bootstrap.Modal(document.getElementById('removeAssociateModal'));
+        const associateSelect = document.getElementById('removeAssociateSelect');
+        associateSelect.innerHTML = ''; // Clear the select options
+
+        areasData[areaIndex].stations[stationIndex].associates.forEach((associate, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = associate.name;
+            associateSelect.appendChild(option);
+        });
+
+        document.getElementById('confirmRemoveAssociateButton').onclick = function() {
+            const selectedAssociateIndex = associateSelect.value;
+            if (selectedAssociateIndex !== '') {
+                areasData[areaIndex].stations[stationIndex].associates.splice(selectedAssociateIndex, 1);
+                updateAreasData();
+                renderAreas();
+                removeAssociateModal.hide();
+            } else {
+                alert('Please select an associate.');
+            }
+        };
+
+        removeAssociateModal.show();
+    }
+
     function showWarningModal(message, onConfirm, onCancel) {
         const warningModal = new bootstrap.Modal(document.getElementById('warningModal'));
         document.getElementById('warningMessage').textContent = message;
@@ -64,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex flex-row">
                         <button class="btn btn-light newAAButton" data-index="${index}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add a new associate">+</button>
-                        <button class="btn btn-light actionButton1" data-index="${index}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Open settings"><i class="bi bi-gear"></i></button>
+                        <button class="btn btn-light actionButton1" data-index="${index}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Open Stations"><i class="bi bi-gear"></i></button>
                         <button class="btn btn-light actionButton2" data-index="${index}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete this area"><i class="bi bi-trash"></i></button>
                         <button class="btn btn-light removeAssociatesButton" data-index="${index}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remove associates"><i class="bi bi-x-circle"></i></button>
                     </div>
@@ -160,9 +215,36 @@ document.addEventListener('DOMContentLoaded', function() {
                         stationItem.innerHTML = `
                             <div class="me-2 p-2 ${colors[stationIndex % colors.length]}"></div>
                             <span class="fw-bold">${station}</span>
-                            <i class="bi bi-trash remove-station-icon" data-area-index="${areaIndex}" data-station-index="${stationIndex}"></i>
+                            <div>
+                                <button class="btn btn-light assignAssociateButton" data-area-index="${areaIndex}" data-station-index="${stationIndex}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Assign associate"><i class="bi bi-plus"></i></button>
+                                <button class="btn btn-light removeAssociateButton" data-area-index="${areaIndex}" data-station-index="${stationIndex}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remove associate"><i class="bi bi-dash"></i></button>
+                                <i class="bi bi-trash remove-station-icon" data-area-index="${areaIndex}" data-station-index="${stationIndex}"></i>
+                            </div>
                         `;
                         stationsList.appendChild(stationItem);
+
+                        // Add event listener to the assign associate button
+                        stationItem.querySelector('.assignAssociateButton').addEventListener('click', function() {
+                            const stationIndex = this.getAttribute('data-station-index');
+                            const areaIndex = this.getAttribute('data-area-index');
+                            showAssignAssociateModal(stationIndex, areaIndex);
+                        });
+
+                        // Add event listener to the remove associate button
+                        stationItem.querySelector('.removeAssociateButton').addEventListener('click', function() {
+                            const stationIndex = this.getAttribute('data-station-index');
+                            const areaIndex = this.getAttribute('data-area-index');
+                            showRemoveAssociateModal(stationIndex, areaIndex);
+                        });
+
+                        // Add event listener to the remove station icon
+                        stationItem.querySelector('.remove-station-icon').addEventListener('click', function() {
+                            const stationIndex = this.getAttribute('data-station-index');
+                            area.stations.splice(stationIndex, 1);
+                            updateAreasData();
+                            renderAreas();
+                            this.parentElement.remove();
+                        });
                     });
                 }
 
@@ -184,18 +266,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 addStationButton.addEventListener('click', function() {
                     showAddStationModal(function(stationName) {
-                        area.stations.push(stationName);
+                        area.stations.push({ name: stationName, associates: [] });
                         updateAreasData();
                         const stationItem = document.createElement('li');
                         stationItem.className = 'list-group-item d-flex justify-content-between align-items-center';
                         stationItem.innerHTML = `
                             <div class="me-2 p-2 ${colors[area.stations.length - 1 % colors.length]}"></div>
                             <span class="fw-bold">${stationName}</span>
-                            <i class="bi bi-trash remove-station-icon" data-area-index="${areaIndex}" data-station-index="${area.stations.length - 1}"></i>
+                            <div>
+                                <button class="btn btn-light assignAssociateButton" data-area-index="${areaIndex}" data-station-index="${area.stations.length - 1}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Assign associate"><i class="bi bi-plus"></i></button>
+                                <button class="btn btn-light removeAssociateButton" data-area-index="${areaIndex}" data-station-index="${area.stations.length - 1}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remove associate"><i class="bi bi-dash"></i></button>
+                                <i class="bi bi-trash remove-station-icon" data-area-index="${areaIndex}" data-station-index="${area.stations.length - 1}"></i>
+                            </div>
                         `;
                         stationsList.appendChild(stationItem);
 
-                        // Add event listener to the new remove station icon
+                        // Add event listener to the assign associate button
+                        stationItem.querySelector('.assignAssociateButton').addEventListener('click', function() {
+                            const stationIndex = this.getAttribute('data-station-index');
+                            const areaIndex = this.getAttribute('data-area-index');
+                            showAssignAssociateModal(stationIndex, areaIndex);
+                        });
+
+                        // Add event listener to the remove associate button
+                        stationItem.querySelector('.removeAssociateButton').addEventListener('click', function() {
+                            const stationIndex = this.getAttribute('data-station-index');
+                            const areaIndex = this.getAttribute('data-area-index');
+                            showRemoveAssociateModal(stationIndex, areaIndex);
+                        });
+
+                        // Add event listener to the remove station icon
                         stationItem.querySelector('.remove-station-icon').addEventListener('click', function() {
                             const stationIndex = this.getAttribute('data-station-index');
                             area.stations.splice(stationIndex, 1);
@@ -280,19 +380,37 @@ document.addEventListener('DOMContentLoaded', function() {
         card.className = 'card text-white bg-dark mb-3 text-center draggable-associate';
         card.style.width = '12rem'; // Reduced width
         card.innerHTML = `
-            <div class="card-body">
-                <h4 class="card-title" style="font-size: 1.2rem;">${associate.name} <i class="bi bi-grip-horizontal dragButton"></i></h4>
-                <p class="card-text" style="font-size: 1rem;">${associate.badgeNumber}</p>
-                <small class="card-text" style="font-size: 0.9rem;">${associate.login}</small>
+            <div class="card-body" draggable="true" data-badge-number="${associate.badgeNumber}">
+                <h4 class="card-title moveable" style="font-size: 1.5rem; white-space: normal; overflow: visible;">
+                    <i class="bi bi-clipboard copy-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="
+                        ${associate.name}
+                        ${associate.badgeNumber}
+                        ${associate.login}
+                    " data-copy="${associate.name}, ${associate.badgeNumber}, ${associate.login}"></i>
+                    ${associate.name}
+                </h4>
             </div>
         `;
 
-        card.setAttribute('draggable', 'true'); // Make the card draggable
-        card.setAttribute('data-badge-number', associate.badgeNumber); // Set the badge number as a data attribute
-        card.addEventListener('dragstart', handleAssociateDragStart);
-        card.addEventListener('dragover', handleAssociateDragOver);
-        card.addEventListener('drop', handleAssociateDrop);
-        card.addEventListener('dragend', handleAssociateDragEnd);
+        // Add drag and drop event listeners to the card body
+        const cardBody = card.querySelector('.card-body');
+        cardBody.addEventListener('dragstart', handleAssociateDragStart);
+        cardBody.addEventListener('dragover', handleAssociateDragOver);
+        cardBody.addEventListener('drop', handleAssociateDrop);
+        cardBody.addEventListener('dragend', handleAssociateDragEnd);
+
+        // Initialize tooltip
+        const tooltipTrigger = card.querySelector('[data-bs-toggle="tooltip"]');
+        new bootstrap.Tooltip(tooltipTrigger, {
+            delay: { show: 1500, hide: 2000 },
+            template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner text-start"></div></div>'
+        });
+
+        // Add event listener to copy icon
+        tooltipTrigger.addEventListener('click', function() {
+            const textToCopy = this.getAttribute('data-copy');
+            navigator.clipboard.writeText(textToCopy);
+        });
 
         return card;
     }
@@ -509,5 +627,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error starting session:', err);
                 alert('Error starting session. Check the server.');
             });
+    });
+
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
     });
 });
