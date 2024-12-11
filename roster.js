@@ -129,6 +129,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }, { once: true });
     });
 
-    // Update the home link
-    document.querySelector('a[href="main.html"]').setAttribute('href', 'index.html');
+    // Update the home link if it exists
+    const homeLink = document.querySelector('a[href="main.html"]');
+    if (homeLink) {
+        homeLink.setAttribute('href', 'index.html');
+    }
 });

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const container = document.getElementById('container');
     let areasData = JSON.parse(localStorage.getItem('areasData')) || [];
     let rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
-    const colors = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'bg-light', 'bg-dark'];
+    const colors = ['bg-dark-blue', 'bg-dark-cyan', 'bg-dark-teal', 'bg-dark-navy', 'bg-dark-slate', 'bg-dark-steel', 'bg-dark-azure', 'bg-dark-indigo'];
 
     function showDeleteConfirmationModal(message, onDelete) {
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Please enter a station name.');
             }
         };
+        document.getElementById('addStationModal').addEventListener('hidden.bs.modal', function () {
+            document.body.classList.remove('modal-open');
+            document.querySelector('.modal-backdrop').remove();
+        });
         addStationModal.show();
     }
 
@@ -58,14 +62,14 @@ document.addEventListener('DOMContentLoaded', function() {
             newArea.setAttribute('data-index', index);
             newArea.innerHTML = `
                 <div class="d-flex align-items-center justify-content-between">
-                    <h3 class="me-2">${area.title}</h3>
-                    <div>
-                        <button class="btn btn-light newAAButton" data-index="${index}">+</button>
-                        <button class="btn btn-light actionButton1" data-index="${index}"><i class="bi bi-gear"></i></button>
-                        <button class="btn btn-light actionButton2" data-index="${index}"><i class="bi bi-trash"></i></button>
-                        <button class="btn btn-light removeAssociatesButton" data-index="${index}"><i class="bi bi-x-circle"></i></button>
+                    <div class="d-flex flex-row">
+                        <button class="btn btn-light newAAButton" data-index="${index}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add a new associate">+</button>
+                        <button class="btn btn-light actionButton1" data-index="${index}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Open settings"><i class="bi bi-gear"></i></button>
+                        <button class="btn btn-light actionButton2" data-index="${index}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete this area"><i class="bi bi-trash"></i></button>
+                        <button class="btn btn-light removeAssociatesButton" data-index="${index}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remove associates"><i class="bi bi-x-circle"></i></button>
                     </div>
                 </div>
+                <h3 class="mt-2">${area.title}</h3>
                 <div class="areaContent mt-3"></div>
             `;
 
@@ -78,6 +82,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             container.appendChild(newArea);
+
+            // Initialize tooltips for dynamically created buttons
+            var tooltipTriggerList = [].slice.call(newArea.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
 
             // Add event listener to the plus sign button
             const newAAButton = newArea.querySelector('.newAAButton');
@@ -313,7 +323,18 @@ document.addEventListener('DOMContentLoaded', function() {
         e.stopPropagation();
         e.preventDefault();
         const draggedBadgeNumber = e.dataTransfer.getData('text/plain');
+
+        if (targetAreaIndex < 0 || targetAreaIndex >= areasData.length) {
+            console.error('Invalid target area index:', targetAreaIndex);
+            return;
+        }
+
         const targetArea = areasData[targetAreaIndex];
+
+        if (!targetArea) {
+            console.error('Target area is undefined');
+            return;
+        }
 
         const draggedAssociate = areasData.flatMap(area => area.associates).find(associate => associate.badgeNumber === draggedBadgeNumber);
         if (draggedAssociate) {
@@ -406,15 +427,20 @@ document.addEventListener('DOMContentLoaded', function() {
             headcountContent.appendChild(areaHeadcount);
         });
 
-        // Create the circle graph
+        // Create the pie chart
         const circleGraph = document.getElementById('circleGraph');
         circleGraph.innerHTML = '';
+        let cumulativePercentage = 0;
+
         areasData.forEach((area, index) => {
             const percentage = (area.associates.length / totalAssociates) * 100;
             const circleSegment = document.createElement('div');
-            circleSegment.className = `circle-segment ${colors[index % colors.length]}`;
+            circleSegment.className = `circle-segment`;
             circleSegment.style.setProperty('--percentage', percentage);
+            circleSegment.style.transform = `rotate(${cumulativePercentage * 3.6}deg)`;
+            circleSegment.style.backgroundColor = colors[index % colors.length];
             circleGraph.appendChild(circleSegment);
+            cumulativePercentage += percentage;
         });
 
         const headcountModal = new bootstrap.Modal(document.getElementById('headcountModal'));
@@ -430,7 +456,17 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const preset = this.getAttribute('data-preset');
             const areas = {
-                Inbound: [{ title: 'Inbound Area', associates: [] }],
+                Inbound: [
+                    { title: 'PG & LEADERSHIP', associates: [], stations: ['PA', 'PG'] },
+                    { title: 'PARCEL', associates: [], stations: Array.from({ length: 17 }, (_, i) => (206 + i).toString()) },
+                    { title: 'WATERSPIDER', associates: [], stations: ['North', 'South'] },
+                    { title: 'TDR', associates: [], stations: ['North', 'South'] },
+                    { title: 'DRIVERS', associates: [], stations: ['North', 'South'] },
+                    { title: 'JAM CLEAR', associates: [], stations: ['North', 'South'] },
+                    { title: 'DOCKSORT', associates: [], stations: ['North', 'South'] },
+                    { title: 'North PIDS', associates: [], stations: ['PID4', 'PID5', 'PID6'] },
+                    { title: 'South PIDS', associates: [], stations: ['PID1', 'PID2', 'PID3'] }
+                ],
                 Outbound: [{ title: 'Outbound Area', associates: [] }],
                 Mansort: [{ title: 'Mansort Area', associates: [] }],
                 NPC: [{ title: 'NPC Area', associates: [] }],
@@ -441,9 +477,11 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             localStorage.setItem('areasData', JSON.stringify(areas[preset]));
+            areasData = areas[preset]; // Update the areasData variable
             renderAreas();
             const presetsModal = bootstrap.Modal.getInstance(document.getElementById('presetsModal'));
             presetsModal.hide();
+            location.reload(); // Refresh the page
         });
     });
 });
