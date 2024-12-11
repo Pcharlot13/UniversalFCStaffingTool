@@ -59,6 +59,9 @@
                     <li class="nav-item">
                         <button id="presetsButton" class="btn bg-dark-slate nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Select a preset configuration">Presets</button>
                     </li>
+                    <li class="nav-item">
+                        <button id="startSessionButton" class="btn bg-dark-orange nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Start a new session">Start Session</button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -278,6 +281,26 @@
                     <p id="warningMessage"></p>
                     <button type="button" class="btn btn-secondary mt-2" id="cancelWarningButton" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-danger mt-2" id="confirmWarningButton">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Session Link -->
+    <div class="modal fade" id="sessionLinkModal" tabindex="-1" aria-labelledby="sessionLinkModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white" style="opacity: 0.9;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sessionLinkModalLabel">Session Link</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Share this link with your team:</p>
+                    <input type="text" class="form-control" id="sessionLinkInput" readonly>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="copySessionLinkButton">Copy Link</button>
                 </div>
             </div>
         </div>

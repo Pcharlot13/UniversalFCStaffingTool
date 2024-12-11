@@ -125,6 +125,10 @@
     background-color: #4b0082 !important;
 }
 
+.bg-dark-orange {
+    background-color: #ff8c00 !important;
+}
+
 body {
     color: white !important;
     background-color: #121212 !important; /* Deep dark black-grey background */
@@ -158,4 +162,9 @@ body {
 
 .btn:hover {
     filter: brightness(85%); /* Slight darkening effect on hover */
+}
+
+/* New color class for the "Start Session" button */
+.bg-dark-orange {
+    background-color: #ff8c00 !important;
 }
