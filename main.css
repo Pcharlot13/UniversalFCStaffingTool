@@ -168,3 +168,8 @@ body {
 .bg-dark-orange {
     background-color: #ff8c00 !important;
 }
+
+/* Styles for moveable elements */
+.moveable {
+    cursor: move;
+}

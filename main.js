@@ -280,19 +280,37 @@ document.addEventListener('DOMContentLoaded', function() {
         card.className = 'card text-white bg-dark mb-3 text-center draggable-associate';
         card.style.width = '12rem'; // Reduced width
         card.innerHTML = `
-            <div class="card-body">
-                <h4 class="card-title" style="font-size: 1.2rem;">${associate.name} <i class="bi bi-grip-horizontal dragButton"></i></h4>
-                <p class="card-text" style="font-size: 1rem;">${associate.badgeNumber}</p>
-                <small class="card-text" style="font-size: 0.9rem;">${associate.login}</small>
+            <div class="card-body" draggable="true" data-badge-number="${associate.badgeNumber}">
+                <h4 class="card-title moveable" style="font-size: 1.5rem; white-space: normal; overflow: visible;">
+                    <i class="bi bi-clipboard copy-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="
+                        ${associate.name}
+                        ${associate.badgeNumber}
+                        ${associate.login}
+                    " data-copy="${associate.name}, ${associate.badgeNumber}, ${associate.login}"></i>
+                    ${associate.name}
+                </h4>
             </div>
         `;
 
-        card.setAttribute('draggable', 'true'); // Make the card draggable
-        card.setAttribute('data-badge-number', associate.badgeNumber); // Set the badge number as a data attribute
-        card.addEventListener('dragstart', handleAssociateDragStart);
-        card.addEventListener('dragover', handleAssociateDragOver);
-        card.addEventListener('drop', handleAssociateDrop);
-        card.addEventListener('dragend', handleAssociateDragEnd);
+        // Add drag and drop event listeners to the card body
+        const cardBody = card.querySelector('.card-body');
+        cardBody.addEventListener('dragstart', handleAssociateDragStart);
+        cardBody.addEventListener('dragover', handleAssociateDragOver);
+        cardBody.addEventListener('drop', handleAssociateDrop);
+        cardBody.addEventListener('dragend', handleAssociateDragEnd);
+
+        // Initialize tooltip
+        const tooltipTrigger = card.querySelector('[data-bs-toggle="tooltip"]');
+        new bootstrap.Tooltip(tooltipTrigger, {
+            delay: { show: 1500, hide: 2000 },
+            template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner text-start"></div></div>'
+        });
+
+        // Add event listener to copy icon
+        tooltipTrigger.addEventListener('click', function() {
+            const textToCopy = this.getAttribute('data-copy');
+            navigator.clipboard.writeText(textToCopy);
+        });
 
         return card;
     }
@@ -509,5 +527,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error starting session:', err);
                 alert('Error starting session. Check the server.');
             });
+    });
+
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
     });
 });
