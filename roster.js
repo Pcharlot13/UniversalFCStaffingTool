@@ -134,4 +134,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (homeLink) {
         homeLink.setAttribute('href', 'index.html');
     }
+
+    document.getElementById('startSessionButton').addEventListener('click', function() {
+        const sessionLink = `${window.location.origin}${window.location.pathname}?session=${Date.now()}`;
+        const sessionLinkInput = document.getElementById('sessionLinkInput');
+        sessionLinkInput.value = sessionLink;
+
+        const sessionLinkModal = new bootstrap.Modal(document.getElementById('sessionLinkModal'));
+        sessionLinkModal.show();
+
+        document.getElementById('copySessionLinkButton').addEventListener('click', function() {
+            sessionLinkInput.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard');
+        });
+    });
 });
