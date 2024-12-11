@@ -33,6 +33,9 @@
                     <li class="nav-item">
                         <button id="exportRosterButton" class="btn bg-dark-orange nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Export the roster to an Excel file">Export Roster</button>
                     </li>
+                    <li class="nav-item">
+                        <button id="closeSessionButton" class="btn bg-dark-red nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Close the current session">Close Session</button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -117,6 +120,25 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="copySessionLinkButton">Copy Link</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Close Session Confirmation -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white" style="opacity: 0.9;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Action</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmationMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmButton">Shut Down</button>
                 </div>
             </div>
         </div>

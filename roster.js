@@ -66,6 +66,30 @@ document.addEventListener('DOMContentLoaded', function() {
         XLSX.writeFile(workbook, 'roster.xlsx');
     }
 
+    // Function to close the session
+    function closeSession() {
+        fetch('/shutdown', { method: 'POST' })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+            })
+            .catch(err => {
+                console.error('Error closing session:', err);
+                alert('Error closing session. Check the server.');
+            });
+    }
+
+    // Function to show confirmation modal for closing session
+    function showCloseSessionConfirmation() {
+        const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        document.getElementById('confirmationMessage').textContent = 'Are you sure you want to shut down the server?';
+        document.getElementById('confirmButton').onclick = function() {
+            closeSession();
+            confirmationModal.hide();
+        };
+        confirmationModal.show();
+    }
+
     // Render the saved roster data on page load
     renderRosterData();
 
@@ -139,6 +163,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add event listener to the "Export Roster" button
     document.getElementById('exportRosterButton').addEventListener('click', exportRosterData);
+
+    // Add event listener to the "Close Session" button
+    document.getElementById('closeSessionButton').addEventListener('click', showCloseSessionConfirmation);
 
     // Update the home link if it exists
     const homeLink = document.querySelector('a[href="main.html"]');
