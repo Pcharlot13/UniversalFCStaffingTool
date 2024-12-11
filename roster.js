@@ -58,6 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Function to export roster data to an Excel file
+    function exportRosterData() {
+        const worksheet = XLSX.utils.json_to_sheet(rosterData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Roster');
+        XLSX.writeFile(workbook, 'roster.xlsx');
+    }
+
     // Render the saved roster data on page load
     renderRosterData();
 
@@ -128,6 +136,9 @@ document.addEventListener('DOMContentLoaded', function() {
             uploadModal.hide();
         }, { once: true });
     });
+
+    // Add event listener to the "Export Roster" button
+    document.getElementById('exportRosterButton').addEventListener('click', exportRosterData);
 
     // Update the home link if it exists
     const homeLink = document.querySelector('a[href="main.html"]');
