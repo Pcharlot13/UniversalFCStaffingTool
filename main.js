@@ -184,17 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Add drag and drop event listeners to the plus sign button
-            newAAButton.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                e.dataTransfer.dropEffect = 'move';
-                this.classList.add('drag-over');
-            });
-
-            newAAButton.addEventListener('drop', function(e) {
-                handleAssociateDrop(e, index, areaContent);
-            });
-
             // Add event listeners to the new action buttons
             const actionButton1 = newArea.querySelector('.actionButton1');
             const actionButton2 = newArea.querySelector('.actionButton2');
@@ -364,12 +353,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 removeAssociatesModal.show();
             });
-
-            // Add drag and drop event listeners to the area content
-            areaContent.addEventListener('dragover', handleAssociateDragOver);
-            areaContent.addEventListener('drop', function(e) {
-                handleAssociateDrop(e, index, areaContent);
-            });
         });
     }
 
@@ -391,13 +374,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </h4>
             </div>
         `;
-
-        // Add drag and drop event listeners to the card body
-        const cardBody = card.querySelector('.card-body');
-        cardBody.addEventListener('dragstart', handleAssociateDragStart);
-        cardBody.addEventListener('dragover', handleAssociateDragOver);
-        cardBody.addEventListener('drop', handleAssociateDrop);
-        cardBody.addEventListener('dragend', handleAssociateDragEnd);
 
         // Initialize tooltip
         const tooltipTrigger = card.querySelector('[data-bs-toggle="tooltip"]');
@@ -423,60 +399,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Save to areasData and localStorage
         areasData[index].associates.push(associate);
         localStorage.setItem('areasData', JSON.stringify(areasData));
-    }
-
-    function handleAssociateDragStart(e) {
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/plain', this.getAttribute('data-badge-number'));
-        this.classList.add('dragging');
-    }
-
-    function handleAssociateDragOver(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        this.classList.add('drag-over');
-    }
-
-    function handleAssociateDrop(e, targetAreaIndex, areaContent) {
-        e.stopPropagation();
-        e.preventDefault();
-        const draggedBadgeNumber = e.dataTransfer.getData('text/plain');
-
-        if (targetAreaIndex < 0 || targetAreaIndex >= areasData.length) {
-            console.error('Invalid target area index:', targetAreaIndex);
-            return;
-        }
-
-        const targetArea = areasData[targetAreaIndex];
-
-        if (!targetArea) {
-            console.error('Target area is undefined');
-            return;
-        }
-
-        const draggedAssociate = areasData.flatMap(area => area.associates).find(associate => associate.badgeNumber === draggedBadgeNumber);
-        if (draggedAssociate) {
-            // Remove the associate from the previous area
-            areasData.forEach(area => {
-                area.associates = area.associates.filter(associate => associate.badgeNumber !== draggedBadgeNumber);
-            });
-
-            // Add the associate to the new area
-            targetArea.associates.push(draggedAssociate);
-            updateAreasData();
-            renderAreas();
-        }
-
-        if (this.classList) {
-            this.classList.remove('drag-over');
-        }
-    }
-
-    function handleAssociateDragEnd() {
-        this.classList.remove('dragging');
-        document.querySelectorAll('.drag-over').forEach(element => {
-            element.classList.remove('drag-over');
-        });
     }
 
     function updateAreasData() {
