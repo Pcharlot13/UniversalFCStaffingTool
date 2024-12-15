@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const container = document.getElementById('container');
-    let areasData = JSON.parse(localStorage.getItem('areasData')) || [];
-    let rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
+    let areasData = getAreasData();
+    let rosterData = getRosterData();
     const colors = ['bg-dark-blue', 'bg-dark-cyan', 'bg-dark-teal', 'bg-dark-navy', 'bg-dark-slate', 'bg-dark-steel', 'bg-dark-azure', 'bg-dark-indigo'];
 
     function showDeleteConfirmationModal(message, onDelete) {
@@ -630,10 +630,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Initialize tooltips
-    document.addEventListener('DOMContentLoaded', function() {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-    });
+    initializeTooltips();
 });
