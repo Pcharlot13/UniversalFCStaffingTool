@@ -2,6 +2,8 @@
 import './newButtonEventListener.js';
 
 // newButtonEventListener.js
+import { renderAreas } from './render.js';
+
 document.getElementById('newButton').addEventListener('click', () => {
     const newAreaInput = document.getElementById('newAreaInput');
     newAreaInput.value = ''; // Clear the input field

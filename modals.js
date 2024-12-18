@@ -1,3 +1,5 @@
+import { updateAreasData, renderAreas } from './utils.js';
+
 export function showDeleteConfirmationModal(message, onDelete) {
     const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
     document.getElementById('deleteConfirmationMessage').textContent = message;
