@@ -1,5 +1,4 @@
-
-function showDeleteConfirmationModal(message, onDelete) {
+export function showDeleteConfirmationModal(message, onDelete) {
     const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
     document.getElementById('deleteConfirmationMessage').textContent = message;
     document.getElementById('confirmDeleteButton').onclick = function() {
@@ -9,7 +8,7 @@ function showDeleteConfirmationModal(message, onDelete) {
     deleteModal.show();
 }
 
-function showAddStationModal(onAdd) {
+export function showAddStationModal(onAdd) {
     const addStationModal = new bootstrap.Modal(document.getElementById('addStationModal'));
     const stationNameInput = document.getElementById('stationNameInput');
     stationNameInput.value = ''; // Clear the input field
@@ -29,7 +28,7 @@ function showAddStationModal(onAdd) {
     addStationModal.show();
 }
 
-function showAssignAssociateModal(stationIndex, areaIndex) {
+export function showAssignAssociateModal(stationIndex, areaIndex) {
     const assignAssociateModal = new bootstrap.Modal(document.getElementById('assignAssociateModal'));
     const associateSelect = document.getElementById('associateSelect');
     associateSelect.innerHTML = ''; // Clear the select options
@@ -57,7 +56,7 @@ function showAssignAssociateModal(stationIndex, areaIndex) {
     assignAssociateModal.show();
 }
 
-function showRemoveAssociateModal(stationIndex, areaIndex) {
+export function showRemoveAssociateModal(stationIndex, areaIndex) {
     const removeAssociateModal = new bootstrap.Modal(document.getElementById('removeAssociateModal'));
     const associateSelect = document.getElementById('removeAssociateSelect');
     associateSelect.innerHTML = ''; // Clear the select options
@@ -84,7 +83,7 @@ function showRemoveAssociateModal(stationIndex, areaIndex) {
     removeAssociateModal.show();
 }
 
-function showWarningModal(message, onConfirm, onCancel) {
+export function showWarningModal(message, onConfirm, onCancel) {
     const warningModal = new bootstrap.Modal(document.getElementById('warningModal'));
     document.getElementById('warningMessage').textContent = message;
     document.getElementById('confirmWarningButton').onclick = function() {
