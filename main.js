@@ -1,3 +1,8 @@
+import './render.js';
+import './eventListeners.js';
+import './presetsButton.js';
+import './startSessionButton.js';
+
 // Declare variables in the global scope
 let areasData = JSON.parse(localStorage.getItem('areasData')) || [];
 let rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
@@ -10,5 +15,4 @@ document.addEventListener('DOMContentLoaded', function() {
     renderAreas();
 
     // Initialize event listeners
-    // ...existing code to initialize event listeners...
 });
