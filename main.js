@@ -11,4 +11,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize event listeners
     // ...existing code to initialize event listeners...
-});Ca
+});
