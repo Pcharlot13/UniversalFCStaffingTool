@@ -1,8 +1,11 @@
-import { renderAreas } from './render.js';
+import { renderAreas } from './ExportRenders.js';
 
-document.getElementById('presetsButton').addEventListener('click', () => {
-    const presetsModal = new bootstrap.Modal(document.getElementById('presetsModal'));
-    presetsModal.show();
+document.addEventListener('DOMContentLoaded', () => {
+    const presetsButton = document.getElementById('presetsButton');
+    presetsButton.addEventListener('click', () => {
+        const presetsModal = new bootstrap.Modal(document.getElementById('presetsModal'));
+        presetsModal.show();
+    });
 });
 
 document.querySelectorAll('.preset-btn').forEach(button => {

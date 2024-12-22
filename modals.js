@@ -1,4 +1,5 @@
-import { updateAreasData, renderAreas } from './utils.js';
+import { updateAreasData } from './utils.js';
+import { renderAreas } from './ExportRenders.js';
 
 export function showDeleteConfirmationModal(message, onDelete) {
     const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));

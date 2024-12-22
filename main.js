@@ -1,12 +1,9 @@
-import './render.js';
+import { renderAreas } from './ExportRenders.js';
+import { areasData, rosterData, colors } from './sharedData.js';
 import './eventListeners.js';
 import './presetsButton.js';
 import './startSessionButton.js';
-
-// Declare variables in the global scope
-let areasData = JSON.parse(localStorage.getItem('areasData')) || [];
-let rosterData = JSON.parse(localStorage.getItem('rosterData')) || [];
-const colors = ['bg-dark-blue', 'bg-dark-cyan', 'bg-dark-teal', 'bg-dark-navy', 'bg-dark-slate', 'bg-dark-steel', 'bg-dark-azure', 'bg-dark-indigo'];
+import './clearDataButton.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const container = document.getElementById('container');

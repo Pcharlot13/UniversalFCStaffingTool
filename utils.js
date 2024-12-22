@@ -1,4 +1,4 @@
-import { renderAreas } from './modals.js';
+import { renderAreas } from './ExportRenders.js';
 
 export function updateAreasData() {
     localStorage.setItem('areasData', JSON.stringify(areasData));
