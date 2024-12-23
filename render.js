@@ -1,6 +1,8 @@
 import { areasData, rosterData, colors } from './sharedData.js';
 import { updateAreasData, deleteArea } from './utils.js';
 import { showAssignAssociateModal, showRemoveAssociateModal, showWarningModal, showAddStationModal, showDeleteConfirmationModal } from './modals.js';
+import { handleAssociateDragOver, handleAssociateDrop } from './dragAndDrop.js';
+import { addAssociate, createAssociateCard } from './associates.js'; // Import functions
 
 export function renderAreas() {
     const container = document.getElementById('container');
@@ -225,7 +227,12 @@ export function renderAreas() {
         });
         actionButton2.addEventListener('click', function() {
             showDeleteConfirmationModal('Are you sure you want to delete this area?', () => {
-                deleteArea(index);
+                const areaIndex = parseInt(this.getAttribute('data-index'), 10);
+                if (!isNaN(areaIndex) && areaIndex >= 0) {
+                    deleteArea(areaIndex);
+                } else {
+                    console.error('Invalid area index:', areaIndex);
+                }
             });
         });
 
@@ -308,8 +315,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (confirm("Are you sure you want to clear all data?")) {
             localStorage.removeItem('areasData');
             localStorage.removeItem('rosterData');
-            areasData = [];
-            rosterData = [];
+            let areasData = []; // Change const to let
+            let rosterData = []; // Change const to let
             renderAreas();
         }
     });

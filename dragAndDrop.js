@@ -1,30 +1,33 @@
+import { areasData } from './sharedData.js';
+import { updateAreasData } from './utils.js';
+import { renderAreas } from './ExportRenders.js';
 
-function handleAssociateDragStart(e) {
+export function handleAssociateDragStart(e) {
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', this.getAttribute('data-badge-number'));
     this.classList.add('dragging');
 }
 
-function handleAssociateDragOver(e) {
+export function handleAssociateDragOver(e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     this.classList.add('drag-over');
 }
 
-function handleAssociateDrop(e, targetAreaIndex, areaContent) {
+export function handleAssociateDrop(e, targetAreaIndex, areaContent) {
     e.stopPropagation();
     e.preventDefault();
     const draggedBadgeNumber = e.dataTransfer.getData('text/plain');
 
     if (targetAreaIndex < 0 || targetAreaIndex >= areasData.length) {
-        console.error('Invalid target area index:', targetAreaIndex);
+        showDeleteConfirmationModal(`Area '${areasData[targetAreaIndex].title}' deleted`, () => {});
         return;
     }
 
     const targetArea = areasData[targetAreaIndex];
 
     if (!targetArea) {
-        console.error('Target area is undefined');
+        showDeleteConfirmationModal(`Area '${areasData[targetAreaIndex].title}' deleted`, () => {});
         return;
     }
 
@@ -41,14 +44,25 @@ function handleAssociateDrop(e, targetAreaIndex, areaContent) {
         renderAreas();
     }
 
-    if (this.classList) {
-        this.classList.remove('drag-over');
+    const dropTarget = e.currentTarget;
+    if (dropTarget && dropTarget.classList) {
+        dropTarget.classList.remove('drag-over');
     }
 }
 
-function handleAssociateDragEnd() {
+export function handleAssociateDragEnd() {
     this.classList.remove('dragging');
     document.querySelectorAll('.drag-over').forEach(element => {
         element.classList.remove('drag-over');
     });
+}
+
+function showDeleteConfirmationModal(message, onDelete) {
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+    document.getElementById('deleteConfirmationMessage').textContent = message;
+    document.getElementById('confirmDeleteButton').onclick = function() {
+        onDelete();
+        deleteModal.hide(); // Close the modal after deletion
+    };
+    deleteModal.show();
 }

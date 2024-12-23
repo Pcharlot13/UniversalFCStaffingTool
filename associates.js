@@ -1,5 +1,7 @@
+import { handleAssociateDragStart, handleAssociateDragOver, handleAssociateDrop, handleAssociateDragEnd } from './dragAndDrop.js';
+import { areasData } from './sharedData.js';
 
-function createAssociateCard(associate) {
+export function createAssociateCard(associate) {
     if (!associate) return null;
 
     const card = document.createElement('div');
@@ -41,7 +43,7 @@ function createAssociateCard(associate) {
     return card;
 }
 
-function addAssociate(badgeNumber, login, name, index, areaContent) {
+export function addAssociate(badgeNumber, login, name, index, areaContent) {
     const associate = { badgeNumber, login, name };
     const associateCard = createAssociateCard(associate);
     areaContent.appendChild(associateCard);

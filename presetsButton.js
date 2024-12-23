@@ -1,4 +1,6 @@
 import { renderAreas } from './ExportRenders.js';
+import { areasData } from './sharedData.js';
+import { getInboundPresets } from './InboundPresets.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const presetsButton = document.getElementById('presetsButton');
@@ -11,29 +13,66 @@ document.addEventListener('DOMContentLoaded', () => {
 document.querySelectorAll('.preset-btn').forEach(button => {
     button.addEventListener('click', function() {
         const preset = this.getAttribute('data-preset');
-        const areas = {
-            Inbound: [
-                { title: 'PG & LEADERSHIP', associates: [], stations: ['PA', 'PG'] },
-                { title: 'PARCEL', associates: [], stations: Array.from({ length: 17 }, (_, i) => (206 + i).toString()) },
-                { title: 'WATERSPIDER', associates: [], stations: ['North', 'South'] },
-                { title: 'TDR', associates: [], stations: ['North', 'South'] },
-                { title: 'DRIVERS', associates: [], stations: ['North', 'South'] },
-                { title: 'JAM CLEAR', associates: [], stations: ['North', 'South'] },
-                { title: 'DOCKSORT', associates: [], stations: ['North', 'South'] },
-                { title: 'North PIDS', associates: [], stations: ['PID4', 'PID5', 'PID6'] },
-                { title: 'South PIDS', associates: [], stations: ['PID1', 'PID2', 'PID3'] }
-            ],
-            Outbound: [{ title: 'Outbound Area', associates: [] }],
-            Mansort: [{ title: 'Mansort Area', associates: [] }],
-            NPC: [{ title: 'NPC Area', associates: [] }],
-            '20lb': [{ title: '20lb Area', associates: [] }],
-            '5lb': [{ title: '5lb Area', associates: [] }],
-            Flow: [{ title: 'Flow Area', associates: [] }],
-            RPND: [{ title: 'RPND Area', associates: [] }]
-        };
+        console.log('Selected preset:', preset);
 
-        localStorage.setItem('areasData', JSON.stringify(areas[preset]));
-        areasData = areas[preset]; // Update the areasData variable
+        if (typeof areasData === 'undefined') {
+            console.error('areasData is not defined');
+            return;
+        }
+
+        switch (preset) {
+            case 'Inbound':
+                areasData.length = 0; // Clear existing areasData
+                areasData.push(...getInboundPresets());
+                break;
+            case 'Outbound':
+                areasData.length = 0; // Clear existing areasData
+                areasData.push(
+                    { title: 'Outbound Area', associates: [] }
+                );
+                break;
+            case 'Mansort':
+                areasData.length = 0; // Clear existing areasData
+                areasData.push(
+                    { title: 'Mansort Area', associates: [] }
+                );
+                break;
+            case 'NPC':
+                areasData.length = 0; // Clear existing areasData
+                areasData.push(
+                    { title: 'NPC Area', associates: [] }
+                );
+                break;
+            case '20lb':
+                areasData.length = 0; // Clear existing areasData
+                areasData.push(
+                    { title: '20lb Area', associates: [] }
+                );
+                break;
+            case '5lb':
+                areasData.length = 0; // Clear existing areasData
+                areasData.push(
+                    { title: '5lb Area', associates: [] }
+                );
+                break;
+            case 'Flow':
+                areasData.length = 0; // Clear existing areasData
+                areasData.push(
+                    { title: 'Flow Area', associates: [] }
+                );
+                break;
+            case 'RPND':
+                areasData.length = 0; // Clear existing areasData
+                areasData.push(
+                    { title: 'RPND Area', associates: [] }
+                );
+                break;
+            default:
+                console.error('Unknown preset:', preset);
+                return;
+        }
+
+        localStorage.setItem('areasData', JSON.stringify(areasData));
         renderAreas();
         const presetsModal = bootstrap.Modal.getInstance(document.getElementById('presetsModal'));
         presetsModal.hide();

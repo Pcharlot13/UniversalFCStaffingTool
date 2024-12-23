@@ -1,4 +1,4 @@
-import { updateAreasData } from './utils.js';
+import { updateAreasData, deleteArea } from './utils.js';
 import { renderAreas } from './ExportRenders.js';
 
 export function showDeleteConfirmationModal(message, onDelete) {
@@ -8,6 +8,14 @@ export function showDeleteConfirmationModal(message, onDelete) {
         onDelete();
         deleteModal.hide(); // Close the modal after deletion
     };
+    document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+        const areaIndex = parseInt(this.getAttribute('data-area-index'), 10);
+        if (!isNaN(areaIndex)) {
+            deleteArea(areaIndex);
+        } else {
+            alert('Invalid area index.');
+        }
+    });
     deleteModal.show();
 }
 
