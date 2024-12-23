@@ -85,14 +85,14 @@ export function renderAreas() {
             }
         });
 
-        // Add drag and drop event listeners to the plus sign button
-        newAAButton.addEventListener('dragover', function(e) {
+        // Add drag and drop event listeners to the area
+        newArea.addEventListener('dragover', function(e) {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
             this.classList.add('drag-over');
         });
 
-        newAAButton.addEventListener('drop', function(e) {
+        newArea.addEventListener('drop', function(e) {
             handleAssociateDrop(e, index, areaContent);
         });
 

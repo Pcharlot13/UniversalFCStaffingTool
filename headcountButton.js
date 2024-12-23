@@ -1,3 +1,5 @@
+import { areasData, colors } from './sharedData.js';
+
 document.getElementById('headcountButton').addEventListener('click', () => {
     const headcountContent = document.getElementById('headcountContent');
     headcountContent.innerHTML = '';
@@ -30,4 +32,9 @@ document.getElementById('headcountButton').addEventListener('click', () => {
 
     const headcountModal = new bootstrap.Modal(document.getElementById('headcountModal'));
     headcountModal.show();
+
+    document.getElementById('headcountModal').addEventListener('hidden.bs.modal', function () {
+        document.body.classList.remove('modal-open');
+        document.querySelector('.modal-backdrop').remove();
+    });
 });
