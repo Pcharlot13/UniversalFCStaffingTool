@@ -13,31 +13,42 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    getLanIpAddress().then(lanIpAddress => {
-        if (!lanIpAddress) {
-            console.error('LAN IP address not found');
-            return;
-        }
+    const createSessionLinkButton = document.getElementById('createSessionLinkButton');
+    if (createSessionLinkButton) {
+        createSessionLinkButton.addEventListener('click', () => {
+            getLanIpAddress().then(lanIpAddress => {
+                if (!lanIpAddress) {
+                    console.error('LAN IP address not found');
+                    return;
+                }
 
-        const ws = new WebSocket(`ws://${lanIpAddress}:8080`);
+                const sessionLinkInput = document.getElementById('sessionLinkInput');
+                sessionLinkInput.value = `http://${lanIpAddress}:8080`;
 
-        ws.onopen = function() {
-            console.log('Connected to WebSocket server');
-        };
+                const sessionLinkModal = new bootstrap.Modal(document.getElementById('sessionLinkModal'));
+                sessionLinkModal.show();
+            });
+        });
+    } else {
+        console.error('Element with ID "createSessionLinkButton" not found');
+    }
 
-        ws.onmessage = function(event) {
-            try {
-                const data = JSON.parse(event.data);
-                console.log('Received:', data);
-                // Update the UI based on the received data
-                // Example: renderAreas(data.areasData);
-            } catch (error) {
-                console.error('Error parsing WebSocket message:', error);
+    const startSessionButton = document.getElementById('startSessionButton');
+    if (startSessionButton) {
+        startSessionButton.addEventListener('click', () => {
+            const lanIpAddress = document.getElementById('sessionLinkInput').value;
+            if (!lanIpAddress) {
+                console.error('LAN IP address not found');
+                return;
             }
-        };
 
-        document.getElementById('startSessionButton').addEventListener('click', () => {
-            fetch('/start-session', { method: 'POST' })
+            fetch('/start-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ lanIpAddress })
+            })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -46,17 +57,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(data => {
                     if (data.success) {
-                        const sessionLinkInput = document.getElementById('sessionLinkInput');
-                        sessionLinkInput.value = data.lanUrl;
+                        alert('Session started successfully');
 
-                        const sessionLinkModal = new bootstrap.Modal(document.getElementById('sessionLinkModal'));
-                        sessionLinkModal.show();
+                        const ws = new WebSocket(`ws://${lanIpAddress}:8080`);
 
-                        document.getElementById('copySessionLinkButton').addEventListener('click', function() {
-                            sessionLinkInput.select();
-                            document.execCommand('copy');
-                            alert('Link copied to clipboard');
-                        });
+                        ws.onopen = function() {
+                            console.log('Connected to WebSocket server');
+                        };
+
+                        ws.onmessage = function(event) {
+                            try {
+                                const data = JSON.parse(event.data);
+                                console.log('Received:', data);
+                                // Update the UI based on the received data
+                                // Example: renderAreas(data.areasData);
+                            } catch (error) {
+                                console.error('Error parsing WebSocket message:', error);
+                            }
+                        };
+
+                        // Example function to send data to the WebSocket server
+                        function sendDataToServer(data) {
+                            ws.send(JSON.stringify(data));
+                        }
+
+                        // Example usage: send data when an area is updated
+                        // sendDataToServer({ type: 'updateArea', areasData });
                     } else {
                         alert('Failed to start session. Check the server.');
                     }
@@ -65,13 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error('Error starting session:', err);
                 });
         });
-
-        // Example function to send data to the WebSocket server
-        function sendDataToServer(data) {
-            ws.send(JSON.stringify(data));
-        }
-
-        // Example usage: send data when an area is updated
-        // sendDataToServer({ type: 'updateArea', areasData });
-    });
+    } else {
+        console.error('Element with ID "startSessionButton" not found');
+    }
 });
