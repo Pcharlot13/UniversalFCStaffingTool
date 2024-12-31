@@ -1,1 +1,1 @@
-
+const basicAlertModal = createBasicAlertModal();
