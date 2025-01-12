@@ -1,0 +1,44 @@
+.bg-dark-blue {
+    background-color: #001f3f;
+    color: white;
+}
+
+.bg-dark-cyan {
+    background-color: #007b8a;
+    color: white;
+}
+
+.bg-dark-teal {
+    background-color: #005f56;
+    color: white;
+}
+
+.bg-dark-navy {
+    background-color: #001f3f;
+    color: white;
+}
+
+.bg-dark-slate {
+    background-color: #2f4f4f;
+    color: white;
+}
+
+.bg-dark-orange {
+    background-color: #ff851b;
+    color: white;
+}
+
+.custom-container {
+    margin-top: 3rem; /* 48px */
+    padding-top: 3rem; /* 48px */
+}
+
+.custom-row {
+    display: flex;
+    margin-top: 3rem; /* 48px */
+}
+
+.custom-col {
+    flex: 1;
+    max-width: 50%;
+}
