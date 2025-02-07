@@ -31,3 +31,10 @@ document.getElementById('newButton').addEventListener('click', () => {
         }
     }, { once: true });
 });
+
+// Add event listener for the "T" key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'T' || event.key === 't') {
+        alert('T button pressed');
+    }
+});

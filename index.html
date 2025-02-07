@@ -45,6 +45,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <button id="trackAAButton" class="btn bg-dark-purple nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Track AA">TRACK AA</button>
+                    </li>
+                    <li class="nav-item">
                         <button id="newButton" class="btn bg-dark-blue nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Create a new area">NEW Area</button>
                     </li>
                     <li class="nav-item">
@@ -350,6 +353,48 @@
         </div>
     </div>
 
+    <!-- Modal for Selecting Area -->
+    <div class="modal fade" id="selectAreaModal" tabindex="-1" aria-labelledby="selectAreaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white" style="opacity: 0.9;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="selectAreaModalLabel">Select Area</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="areaList" class="list-group">
+                        <!-- List of areas will be dynamically generated here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Tracking AA -->
+    <div class="modal fade" id="trackAAModal" tabindex="-1" aria-labelledby="trackAAModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white" style="opacity: 0.9;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="trackAAModalLabel">Track AA</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="badgeNumberInputTrackAA" class="form-label">Badge Number</label>
+                        <input type="text" class="form-control" id="badgeNumberInputTrackAA">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="confirmTrackAAButton">Track</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="utils.js"></script>
     <script type="module" src="modals.js"></script>
@@ -364,6 +409,12 @@
     <script type="module" src="areaButtons.js"></script>
     <script type="module" src="main.js"></script>
     <script type="module" src="tooltips.js"></script>
+    <script type="module" src="TrackingAA.js"></script>
+    <script type="module">
+        import { areasData, associatesData } from './data.js';
+        window.areasData = areasData;
+        window.associatesData = associatesData;
+    </script>
     <script>
         // Initialize tooltips
         document.addEventListener('DOMContentLoaded', function() {
