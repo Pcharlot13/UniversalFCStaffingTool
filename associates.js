@@ -1,7 +1,8 @@
 import { handleAssociateDragStart, handleAssociateDragOver, handleAssociateDrop, handleAssociateDragEnd } from './dragAndDrop.js';
 import { areasData } from './sharedData.js';
+import { permissionsList } from './permissionsBTN.js';
 
-export function createAssociateCard(associate) {
+export function createAssociateCard(associate, isRosterPage = false) {
     if (!associate) return null;
 
     const card = document.createElement('div');
@@ -17,6 +18,16 @@ export function createAssociateCard(associate) {
                 " data-copy="${associate.name}, ${associate.badgeNumber}, ${associate.login}"></i>
                 ${associate.name}
             </h4>
+            ${isRosterPage ? `
+            <div class="permissions d-flex flex-wrap">
+                ${permissionsList.map((permission, index) => `
+                    <div class="form-check me-2">
+                        <input class="form-check-input" type="checkbox" id="permission-${index}-${associate.badgeNumber}" data-bs-toggle="tooltip" data-bs-placement="top" title="${permission}">
+                        <label class="form-check-label" for="permission-${index}-${associate.badgeNumber}"></label>
+                    </div>
+                `).join('')}
+            </div>
+            ` : ''}
         </div>
     `;
 
@@ -27,15 +38,18 @@ export function createAssociateCard(associate) {
     cardBody.addEventListener('drop', handleAssociateDrop);
     cardBody.addEventListener('dragend', handleAssociateDragEnd);
 
-    // Initialize tooltip
-    const tooltipTrigger = card.querySelector('[data-bs-toggle="tooltip"]');
-    new bootstrap.Tooltip(tooltipTrigger, {
-        delay: { show: 1500, hide: 2000 },
-        template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner text-start"></div></div>'
+    // Initialize tooltips
+    const tooltipTriggers = card.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggers.forEach(trigger => {
+        new bootstrap.Tooltip(trigger, {
+            delay: { show: 1500, hide: 2000 },
+            template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner text-start"></div></div>'
+        });
     });
 
     // Add event listener to copy icon
-    tooltipTrigger.addEventListener('click', function() {
+    const copyIcon = card.querySelector('.copy-icon');
+    copyIcon.addEventListener('click', function() {
         const textToCopy = this.getAttribute('data-copy');
         navigator.clipboard.writeText(textToCopy);
     });
@@ -43,9 +57,9 @@ export function createAssociateCard(associate) {
     return card;
 }
 
-export function addAssociate(badgeNumber, login, name, index, areaContent) {
+export function addAssociate(badgeNumber, login, name, index, areaContent, isRosterPage = false) {
     const associate = { badgeNumber, login, name };
-    const associateCard = createAssociateCard(associate);
+    const associateCard = createAssociateCard(associate, isRosterPage);
     areaContent.appendChild(associateCard);
 
     // Save to areasData and localStorage

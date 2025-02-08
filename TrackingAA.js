@@ -1,4 +1,5 @@
 import { renderAreas } from './render.js';
+import { rosterData } from './sharedData.js';
 
 export function trackAA() {
     console.log("Tracking AA functionality is now available.");
@@ -65,6 +66,12 @@ function showAddAssociateModal(badgeNumber, areaTitle) {
             window.associatesData.push(newAssociate);
             localStorage.setItem('associatesData', JSON.stringify(window.associatesData));
             addAssociateToArea(newAssociate, areaTitle);
+            // Update roster data
+            if (!window.rosterData) {
+                window.rosterData = [];
+            }
+            window.rosterData.push({ badgeNumber, login, name });
+            localStorage.setItem('rosterData', JSON.stringify(window.rosterData));
             associateModal.hide();
             location.reload(); // Refresh the page
         } else {
@@ -78,6 +85,17 @@ function addAssociateToArea(associate, areaTitle) {
     if (area) {
         area.associates.push(associate);
         localStorage.setItem('areasData', JSON.stringify(window.areasData));
+
+        // Update rosterData
+        if (!window.rosterData) {
+            window.rosterData = [];
+        }
+        const existingEntry = window.rosterData.find(entry => entry.badgeNumber === associate.badgeNumber);
+        if (!existingEntry) {
+            window.rosterData.push(associate);
+            localStorage.setItem('rosterData', JSON.stringify(window.rosterData));
+        }
+
         renderAreas();
         location.reload(); // Refresh the page
     }

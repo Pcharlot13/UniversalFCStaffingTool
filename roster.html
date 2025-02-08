@@ -42,6 +42,9 @@
                     <li class="nav-item">
                         <button id="startSessionButton" class="btn bg-dark-orange nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Start session">Start Session</button>
                     </li>
+                    <li class="nav-item">
+                        <button id="permissionsButton" class="btn bg-dark-orange nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Permissions">Permissions</button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -150,6 +153,30 @@
         </div>
     </div>
 
+    <!-- Modal for Permissions -->
+    <div class="modal fade" id="permissionsModal" tabindex="-1" aria-labelledby="permissionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white" style="opacity: 0.9;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="permissionsModalLabel">Manage Permissions</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="permissionsList" class="list-group">
+                        <!-- List items will be dynamically added here -->
+                    </ul>
+                    <div class="input-group mt-3">
+                        <input type="text" class="form-control" id="newPermissionInput" placeholder="Enter department name">
+                        <button class="btn btn-primary" id="addPermissionButton">Add</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="roster.js"></script>
     <script type="module" src="utils.js"></script>
@@ -165,6 +192,7 @@
     <script type="module" src="areaButtons.js"></script>
     <script type="module" src="main.js"></script>
     <script type="module" src="tooltips.js"></script>
+    <script type="module" src="permissionsBTN.js"></script>
     <script>
         // Initialize tooltips
         document.addEventListener('DOMContentLoaded', function() {
